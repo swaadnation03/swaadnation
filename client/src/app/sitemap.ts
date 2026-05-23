@@ -8,7 +8,7 @@ async function getProducts() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
   
   try {
-    const res = await fetch(`${apiUrl}/products`, {
+    const res = await fetch(`${apiUrl}/api/products`, {
       // Add cache control for production
       cache: 'no-store',
       // Add timeout to avoid hanging
