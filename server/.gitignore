@@ -7,6 +7,8 @@
 # environment variables
 .env
 .env*.local
+.env*.production    # ← ADD THIS LINE
+.env.production     # ← ADD THIS LINE
 
 # uploads
 /uploads/
