@@ -1,0 +1,9 @@
+{
+  "name": "Swaad Nation",
+  "short_name": "SwaadNation",
+  "description": "Authentic Bihari snacks",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2E7D32",
+  "background_color": "#FFFFFF"
+}
