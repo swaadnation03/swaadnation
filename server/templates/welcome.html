@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Swaad Nation</title>
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+    }
+    .header h1 {
+      color: white;
+      margin: 0;
+      font-size: 28px;
+    }
+    .header p {
+      color: #FFC107;
+      margin: 5px 0 0;
+    }
+    .content {
+      background: white;
+      padding: 30px;
+      border: 1px solid #e0e0e0;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #999;
+    }
+    .social-links {
+      margin-top: 20px;
+    }
+    .social-links a {
+      margin: 0 10px;
+      color: #2E7D32;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Swaad Nation</h1>
+      <p>Taste of Champaran</p>
+    </div>
+    <div class="content">
+      <h2>Welcome to the family, {{name}}! 🎉</h2>
+      
+      <p>Thank you for joining Swaad Nation. We're thrilled to have you as part of our community of food lovers who appreciate authentic Bihari flavors.</p>
+      
+      <h3>🎁 Your First Order Offer</h3>
+      <p>As a welcome gift, use coupon code <strong>WELCOME10</strong> to get 10% off on your first order!</p>
+      
+      <div style="text-align: center;">
+        <a href="{{shopUrl}}" class="button">Start Shopping Now</a>
+      </div>
+      
+      <h3>✨ What you can expect:</h3>
+      <ul>
+        <li>🍪 Authentic traditional snacks from Bihar</li>
+        <li>🚚 Free delivery on orders above ₹499</li>
+        <li>💳 Secure payment with COD available</li>
+        <li>⭐ 100% hygienic and no added preservatives</li>
+      </ul>
+      
+      <p>Have questions? Reply to this email or reach out to us at support@swaadnation.com</p>
+      
+      <p>Happy snacking!<br>
+      <strong>Team Swaad Nation</strong></p>
+    </div>
+    <div class="footer">
+      <div class="social-links">
+        <a href="#">Instagram</a> | 
+        <a href="#">Facebook</a> | 
+        <a href="#">Twitter</a>
+      </div>
+      <p>&copy; 2024 Swaad Nation. All rights reserved.<br>
+      Motihari, East Champaran, Bihar, 845401</p>
+      <p><a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
+    </div>
+  </div>
+</body>
+</html>
