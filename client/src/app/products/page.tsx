@@ -34,7 +34,8 @@ export default function Products() {
             className="border rounded-2xl shadow hover:shadow-lg transition p-4"
           >
             <img
-              src={p.image ? `${API_URL}${p.image}` : `${API_URL}/placeholder.jpg`}
+              src={p.image ? `${API_URL}${p.image}` : "https://via.placeholder.com/300x200?text=No+Image"}
+              alt={p.name}
               className="w-full h-40 object-cover rounded-lg"
             />
 

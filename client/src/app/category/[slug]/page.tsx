@@ -133,9 +133,12 @@ export default function CategoryPage() {
                 <div className="h-36 xs:h-40 sm:h-44 md:h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center overflow-hidden">
                   {product.imageFront ? (
                     <img
-                      src={`${API_URL}${product.imageFront}`}
+                      src={`${API_URL}${product.imageFront}` || "https://via.placeholder.com/300x200?text=No+Image"}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x200?text=No+Image";
+                      }}
                     />
                   ) : (
                     <div className="text-5xl sm:text-6xl">

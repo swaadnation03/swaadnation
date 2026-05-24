@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
                         onError={(e) => {
                           console.error("Failed to load front image");
                           (e.target as HTMLImageElement).src =
-                            `${API_URL}/placeholder.jpg`;
+                            "https://via.placeholder.com/400x400?text=No+Image";
                         }}
                       />
                     ) : (
@@ -179,7 +179,7 @@ export default function ProductDetailPage() {
                       onError={(e) => {
                         console.error("Failed to load back image");
                         (e.target as HTMLImageElement).src =
-                          `${API_URL}/placeholder.jpg`;
+                          "https://via.placeholder.com/400x400?text=No+Image";
                       }}
                     />
                   ) : (
