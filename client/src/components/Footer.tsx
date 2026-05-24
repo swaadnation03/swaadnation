@@ -186,12 +186,12 @@ export default function Footer() {
                   swaadnation03@gmail.com
                 </a>
               </li>
-              <li className="flex items-center gap-3 justify-center sm:justify-start">
+              {/* <li className="flex items-center gap-3 justify-center sm:justify-start">
                 <span className="text-green-500 text-lg">⏰</span>
                 <span className="text-xs sm:text-sm" style={{ color: settings.footerTextColor }}>
                   Mon - Fri, 10am - 6:30pm
                 </span>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
