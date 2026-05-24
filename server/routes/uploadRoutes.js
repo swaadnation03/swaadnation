@@ -1,42 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../config/multer');
+const multer = require('multer');
+const cloudinary = require('../config/cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// Upload single image to Cloudinary
+// Configure Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'swaadnation/products',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }]
+  }
+});
+
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }
+});
+
+// Upload single image
 router.post('/image', protect, admin, upload.single('image'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    // Cloudinary returns the URL directly
-    const imageUrl = req.file.path;
-    
     res.json({ 
       success: true, 
-      imageUrl: imageUrl,
-      message: 'Image uploaded successfully to Cloudinary'
-    });
-  } catch (error) {
-    console.error('Upload error:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Upload multiple images
-router.post('/images', protect, admin, upload.array('images', 5), (req, res) => {
-  try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ error: 'No files uploaded' });
-    }
-    
-    const imageUrls = req.files.map(file => file.path);
-    
-    res.json({ 
-      success: true, 
-      imageUrls: imageUrls,
-      message: `${imageUrls.length} images uploaded successfully`
+      imageUrl: req.file.path,
+      message: 'Image uploaded successfully'
     });
   } catch (error) {
     console.error('Upload error:', error);
