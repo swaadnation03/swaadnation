@@ -4,8 +4,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { API_URL } from '@/lib/api';
-
+import { API_URL } from "@/lib/api";
 
 type Offer = {
   _id: string;
@@ -79,7 +78,7 @@ export default function AdminOffersPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const submitData = new FormData();
     submitData.append("title", formData.title);
     submitData.append("description", formData.description);
@@ -89,7 +88,7 @@ export default function AdminOffersPage() {
     submitData.append("order", formData.order);
     submitData.append("discount", formData.discount);
     submitData.append("isActive", String(formData.isActive));
-    
+
     if (imageFile) {
       submitData.append("image", imageFile);
     }
@@ -159,7 +158,7 @@ export default function AdminOffersPage() {
       discount: offer.discount || "",
       isActive: offer.isActive,
     });
-    setImagePreview(`${API_URL}${offer.image}`);
+    setImagePreview(offer.image);
     setImageFile(null);
     setShowModal(true);
   };
@@ -189,7 +188,9 @@ export default function AdminOffersPage() {
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-sm sm:text-base">Loading offers...</p>
+          <p className="text-gray-600 text-sm sm:text-base">
+            Loading offers...
+          </p>
         </div>
       </div>
     );
@@ -199,12 +200,15 @@ export default function AdminOffersPage() {
     <ProtectedRoute adminOnly>
       <div className="min-h-screen bg-gray-100 py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           {/* Header - Responsive */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Offer Management</h1>
-              <p className="text-gray-600 text-sm sm:text-base mt-1">Create and manage festival offers & banners</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Offer Management
+              </h1>
+              <p className="text-gray-600 text-sm sm:text-base mt-1">
+                Create and manage festival offers & banners
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
               <Link
@@ -229,7 +233,9 @@ export default function AdminOffersPage() {
           {offers.length === 0 ? (
             <div className="bg-white rounded-lg shadow p-8 sm:p-12 text-center">
               <div className="text-5xl mb-4">🎉</div>
-              <p className="text-gray-500 text-base sm:text-lg">No offers created yet</p>
+              <p className="text-gray-500 text-base sm:text-lg">
+                No offers created yet
+              </p>
               <button
                 onClick={() => setShowModal(true)}
                 className="mt-4 text-orange-600 hover:text-orange-700 text-sm sm:text-base"
@@ -245,9 +251,13 @@ export default function AdminOffersPage() {
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   <img
-                    src={`${API_URL}${offer.image}`}
+                    src={offer.image}
                     alt={offer.title}
                     className="w-full h-36 sm:h-40 md:h-48 object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "https://via.placeholder.com/400x200?text=Offer";
+                    }}
                   />
                   <div className="p-3 sm:p-4">
                     <div className="flex justify-between items-start gap-2">
@@ -273,7 +283,10 @@ export default function AdminOffersPage() {
                       </p>
                     )}
                     <div className="mt-2 sm:mt-3 text-xs text-gray-500">
-                      <p>Valid: {formatDate(offer.startDate)} - {formatDate(offer.endDate)}</p>
+                      <p>
+                        Valid: {formatDate(offer.startDate)} -{" "}
+                        {formatDate(offer.endDate)}
+                      </p>
                       <p>Order: {offer.order}</p>
                     </div>
                     <div className="flex gap-2 mt-3 sm:mt-4">
@@ -301,7 +314,6 @@ export default function AdminOffersPage() {
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
             <div className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              
               {/* Modal Header */}
               <div className="sticky top-0 bg-orange-500 p-4 rounded-t-lg">
                 <h2 className="text-lg sm:text-xl font-bold text-white">
@@ -311,7 +323,6 @@ export default function AdminOffersPage() {
 
               {/* Modal Body */}
               <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
-                
                 {/* Image Upload */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -347,7 +358,9 @@ export default function AdminOffersPage() {
                       </div>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">JPG, PNG, GIF up to 5MB</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    JPG, PNG, GIF up to 5MB
+                  </p>
                 </div>
 
                 {/* Title */}
@@ -359,7 +372,9 @@ export default function AdminOffersPage() {
                     type="text"
                     required
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
                     placeholder="e.g., Chhath Puja Special Offer"
                   />
@@ -374,7 +389,9 @@ export default function AdminOffersPage() {
                     rows={2}
                     required
                     value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
                     placeholder="Describe the offer"
                   />
@@ -389,7 +406,9 @@ export default function AdminOffersPage() {
                     <input
                       type="date"
                       value={formData.startDate}
-                      onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, startDate: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
                     />
                   </div>
@@ -401,7 +420,9 @@ export default function AdminOffersPage() {
                       type="date"
                       required
                       value={formData.endDate}
-                      onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, endDate: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
                     />
                   </div>
@@ -416,7 +437,9 @@ export default function AdminOffersPage() {
                     <input
                       type="text"
                       value={formData.link}
-                      onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, link: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
                       placeholder="/products"
                     />
@@ -428,7 +451,9 @@ export default function AdminOffersPage() {
                     <input
                       type="text"
                       value={formData.discount}
-                      onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, discount: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
                       placeholder="e.g., 20% OFF"
                     />
@@ -444,7 +469,9 @@ export default function AdminOffersPage() {
                     <input
                       type="number"
                       value={formData.order}
-                      onChange={(e) => setFormData({ ...formData, order: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, order: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
                     />
                   </div>
@@ -453,7 +480,12 @@ export default function AdminOffersPage() {
                       <input
                         type="checkbox"
                         checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            isActive: e.target.checked,
+                          })
+                        }
                         className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500"
                       />
                       <span className="text-sm text-gray-700">Active</span>

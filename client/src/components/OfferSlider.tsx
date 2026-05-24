@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { API_URL } from '@/lib/api';
+import { API_URL } from "@/lib/api";
 
 type Offer = {
   _id: string;
@@ -60,7 +60,6 @@ export default function OfferSlider() {
   return (
     <div className="w-full bg-gradient-to-r from-orange-50 to-green-50 py-6 sm:py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Header - Responsive */}
         <div className="text-center mb-4 sm:mb-6 md:mb-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-800 mb-1 sm:mb-2">
@@ -80,14 +79,11 @@ export default function OfferSlider() {
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {offers.map((offer) => (
-                <div
-                  key={offer._id}
-                  className="w-full flex-shrink-0 relative"
-                >
+                <div key={offer._id} className="w-full flex-shrink-0 relative">
                   {/* Image Container - Responsive aspect ratio */}
                   <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] md:aspect-[3/1] bg-gray-200">
                     <img
-                      src={`${API_URL}${offer.image}`}
+                      src={offer.image}
                       alt={offer.title}
                       className="w-full h-full object-cover sm:object-contain bg-gradient-to-r from-orange-100 to-green-100"
                       onError={(e) => {
@@ -96,7 +92,7 @@ export default function OfferSlider() {
                       }}
                     />
                   </div>
-                  
+
                   {/* Overlay Content - Responsive padding and text sizes */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-3 sm:p-4 md:p-6 lg:p-8">
                     <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-white mb-0.5 sm:mb-1 md:mb-2 line-clamp-2">
@@ -126,8 +122,18 @@ export default function OfferSlider() {
                   className="absolute left-1 sm:left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-1 sm:p-1.5 md:p-2 rounded-full shadow-lg transition-all"
                   aria-label="Previous slide"
                 >
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg
+                    className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
                   </svg>
                 </button>
                 <button
@@ -135,8 +141,18 @@ export default function OfferSlider() {
                   className="absolute right-1 sm:right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-1 sm:p-1.5 md:p-2 rounded-full shadow-lg transition-all"
                   aria-label="Next slide"
                 >
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
               </>
