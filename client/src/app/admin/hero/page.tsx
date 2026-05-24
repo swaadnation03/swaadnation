@@ -42,9 +42,15 @@ export default function AdminHeroPage() {
     isActive: false,
   });
 
+  // useEffect(() => {
+  //   fetchSettings();
+  // }, []);
+
   useEffect(() => {
-    fetchSettings();
-  }, []);
+    if (user?.token) {
+      fetchSettings();
+    }
+  }, [user?.token]);
 
   const fetchSettings = async () => {
     try {

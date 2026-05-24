@@ -34,9 +34,15 @@ export default function AdminReviewsPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "pending" | "approved">("pending");
 
+  // useEffect(() => {
+  //   fetchReviews();
+  // }, []);
+
   useEffect(() => {
-    fetchReviews();
-  }, []);
+    if (user?.token) {
+      fetchReviews();
+    }
+  }, [user?.token]);
 
   const fetchReviews = async () => {
     try {

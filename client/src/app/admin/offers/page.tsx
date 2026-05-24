@@ -41,9 +41,15 @@ export default function AdminOffersPage() {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  // useEffect(() => {
+  //   fetchOffers();
+  // }, []);
+
   useEffect(() => {
-    fetchOffers();
-  }, []);
+    if (user?.token) {
+      fetchOffers();
+    }
+  }, [user?.token]);
 
   const fetchOffers = async () => {
     try {

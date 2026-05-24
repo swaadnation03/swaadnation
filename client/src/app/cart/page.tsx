@@ -88,7 +88,7 @@ export default function CartPage() {
                     <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto sm:mx-0 bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                       {imageUrl ? (
                         <img
-                          src={imageUrl}
+                          src={item.image}
                           alt={item.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {

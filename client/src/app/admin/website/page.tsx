@@ -21,9 +21,15 @@ export default function AdminWebsitePage() {
     isActive: false,
   });
 
+  // useEffect(() => {
+  //   fetchSettings();
+  // }, []);
+
   useEffect(() => {
-    fetchSettings();
-  }, []);
+    if (user?.token) {
+      fetchSettings();
+    }
+  }, [user?.token]);
 
   const fetchSettings = async () => {
     try {

@@ -12,6 +12,8 @@ import SEO from "@/components/SEO";
 import { trackViewProduct } from "@/lib/analytics";
 import RelatedProducts from "@/components/RelatedProducts";
 import { API_URL } from '@/lib/api';
+import { getOptimizedImage } from '@/lib/images';
+
 
 type Product = {
   _id: string;

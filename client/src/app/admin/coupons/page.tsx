@@ -40,9 +40,15 @@ export default function AdminCouponsPage() {
     isFirstOrderOnly: false,
   });
 
+  // useEffect(() => {
+  //   fetchCoupons();
+  // }, []);
+
   useEffect(() => {
-    fetchCoupons();
-  }, []);
+    if (user?.token) {
+      fetchCoupons();
+    }
+  }, [user?.token]);
 
   const fetchCoupons = async () => {
     try {
