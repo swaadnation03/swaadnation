@@ -49,6 +49,32 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#2E7D32" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+        
+        {/* SEO Meta Tags */}
+        <meta name="description" content="Authentic Bihari snacks and delicacies delivered to your doorstep. Thekua, Nimki, Litti Chokha and more traditional Champaran flavors." />
+        <meta name="keywords" content="Bihari snacks, Thekua, Champaran food, traditional Indian snacks, Swaad Nation, Taste of Champaran" />
+        <meta name="author" content="Swaad Nation" />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph / Social Media Meta Tags */}
+        <meta property="og:title" content="Swaad Nation - Taste of Champaran" />
+        <meta property="og:description" content="Authentic Bihari flavors delivered to your doorstep" />
+        <meta property="og:image" content="https://swaadnation.com/logo.png" />
+        <meta property="og:url" content="https://swaadnation.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Swaad Nation" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Swaad Nation - Taste of Champaran" />
+        <meta name="twitter:description" content="Authentic Bihari flavors delivered to your doorstep" />
+        <meta name="twitter:image" content="https://swaadnation.com/logo.png" />
+        
+        {/* Google Search Console Verification - Add your verification code here */}
+        <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://swaadnation.com" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
         <Providers>
@@ -73,6 +99,7 @@ export default function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+              gtag('config', 'G-XXXXXXXXXX');
             `,
           }}
         />
