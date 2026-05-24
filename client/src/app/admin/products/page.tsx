@@ -59,8 +59,10 @@ export default function AdminProductsPage() {
   });
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (user?.token) {
+      fetchProducts();
+    }
+  }, [user?.token]);
 
   const fetchProducts = async () => {
     try {
@@ -404,7 +406,7 @@ export default function AdminProductsPage() {
                         <div className="flex gap-2">
                           {product.imageFront && (
                             <img
-                              src={`${API_URL}${product.imageFront}`}
+                              src={product.imageFront}
                               alt="front"
                               className="h-8 w-8 sm:h-10 sm:w-10 object-cover rounded border"
                               onError={(e) => {
@@ -419,7 +421,7 @@ export default function AdminProductsPage() {
                           )}
                           {product.imageBack && (
                             <img
-                              src={`${API_URL}${product.imageBack}`}
+                              src={product.imageBack}
                               alt="back"
                               className="h-8 w-8 sm:h-10 sm:w-10 object-cover rounded border"
                               onError={(e) => {

@@ -34,9 +34,12 @@ export default function Products() {
             className="border rounded-2xl shadow hover:shadow-lg transition p-4"
           >
             <img
-              src={p.image ? `${API_URL}${p.image}` : "https://via.placeholder.com/300x200?text=No+Image"}
+              src={p.image || "https://via.placeholder.com/300x200?text=No+Image"}
               alt={p.name}
               className="w-full h-40 object-cover rounded-lg"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x200?text=No+Image";
+              }}
             />
 
             <h2 className="text-lg font-semibold mt-3">{p.name}</h2>

@@ -157,7 +157,7 @@ export default function ProductDetailPage() {
                   {showFront ? (
                     product.imageFront ? (
                       <img
-                        src={`${API_URL}${product.imageFront}`}
+                        src={product.imageFront || "https://via.placeholder.com/400x400?text=No+Image"}
                         alt={product.name}
                         className="w-full h-full object-contain p-4"
                         onError={(e) => {
@@ -173,7 +173,7 @@ export default function ProductDetailPage() {
                     )
                   ) : product.imageBack ? (
                     <img
-                      src={`${API_URL}${product.imageBack}`}
+                      src={product.imageBack || "https://via.placeholder.com/400x400?text=No+Image"}
                       alt={`${product.name} - Back`}
                       className="w-full h-full object-contain p-4"
                       onError={(e) => {

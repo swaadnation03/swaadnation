@@ -2,7 +2,7 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    domains: ['localhost', 'swaadnation-api.onrender.com'],
+    domains: ['localhost', 'res.cloudinary.com', 'swaadnation-api.onrender.com'],
   },
   // Ignore build errors for sitemap
   typescript: {

@@ -139,7 +139,7 @@ export default function RelatedProducts({ productId, category }: RelatedProducts
             <div className="h-32 xs:h-36 sm:h-40 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden">
               {product.imageFront ? (
                 <img
-                  src={`${API_URL}${product.imageFront}` || "https://via.placeholder.com/300x200?text=No+Image"}
+                  src={product.imageFront || "https://via.placeholder.com/300x200?text=No+Image"}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {

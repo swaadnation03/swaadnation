@@ -133,7 +133,7 @@ export default function CategoryPage() {
                 <div className="h-36 xs:h-40 sm:h-44 md:h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center overflow-hidden">
                   {product.imageFront ? (
                     <img
-                      src={`${API_URL}${product.imageFront}` || "https://via.placeholder.com/300x200?text=No+Image"}
+                      src={product.imageFront}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
