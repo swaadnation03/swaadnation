@@ -329,7 +329,7 @@ export default function AdminOffersPage() {
                     Offer Image <span className="text-red-500">*</span>
                   </label>
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                    <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors text-sm w-full sm:w-auto text-center">
+                    <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-500 px-4 py-2 rounded-lg transition-colors text-sm w-full sm:w-auto text-center">
                       Choose Image
                       <input
                         type="file"
@@ -375,7 +375,7 @@ export default function AdminOffersPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-500 text-sm sm:text-base"
                     placeholder="e.g., Chhath Puja Special Offer"
                   />
                 </div>
@@ -392,7 +392,7 @@ export default function AdminOffersPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-500 text-sm sm:text-base"
                     placeholder="Describe the offer"
                   />
                 </div>
@@ -409,7 +409,7 @@ export default function AdminOffersPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, startDate: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-500 text-sm"
                     />
                   </div>
                   <div>
@@ -423,7 +423,7 @@ export default function AdminOffersPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, endDate: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-500 text-sm"
                     />
                   </div>
                 </div>
@@ -440,7 +440,7 @@ export default function AdminOffersPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, link: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-500 text-sm"
                       placeholder="/products"
                     />
                   </div>
@@ -454,7 +454,7 @@ export default function AdminOffersPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, discount: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 text-sm"
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-500 text-sm"
                       placeholder="e.g., 20% OFF"
                     />
                   </div>
@@ -463,7 +463,7 @@ export default function AdminOffersPage() {
                 {/* Order & Active */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-500 mb-1">
                       Display Order
                     </label>
                     <input
@@ -488,7 +488,7 @@ export default function AdminOffersPage() {
                         }
                         className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500"
                       />
-                      <span className="text-sm text-gray-700">Active</span>
+                      <span className="text-sm text-gray-500">Active</span>
                     </label>
                   </div>
                 </div>
@@ -507,7 +507,7 @@ export default function AdminOffersPage() {
                       setShowModal(false);
                       resetForm();
                     }}
-                    className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors text-sm sm:text-base order-1 sm:order-2"
+                    className="flex-1 bg-gray-200 text-gray-500 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors text-sm sm:text-base order-1 sm:order-2"
                   >
                     Cancel
                   </button>

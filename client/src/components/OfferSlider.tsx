@@ -22,6 +22,8 @@ export default function OfferSlider() {
     fetchOffers();
   }, []);
 
+  
+
   useEffect(() => {
     if (offers.length > 0) {
       const interval = setInterval(() => {

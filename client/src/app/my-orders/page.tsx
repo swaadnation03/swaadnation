@@ -259,7 +259,7 @@ export default function MyOrdersPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs sm:text-sm text-gray-500">Order Status</p>
-                      <p className="text-base sm:text-xl font-semibold text-gray-900">{selectedOrder.status}</p>
+                      <p className="text-base sm:text-xl font-semibold text-gray-500">{selectedOrder.status}</p>
                     </div>
                     <div className="text-2xl sm:text-4xl">{getStatusIcon(selectedOrder.status)}</div>
                   </div>
@@ -273,15 +273,15 @@ export default function MyOrdersPage() {
                   <div className="space-y-2 text-xs sm:text-sm bg-gray-50 rounded-lg p-3 sm:p-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span className="text-gray-500 w-full sm:w-24">Order ID:</span>
-                      <span className="font-mono text-gray-900 break-all">{selectedOrder._id}</span>
+                      <span className="font-mono text-gray-500 break-all">{selectedOrder._id}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span className="text-gray-500 w-full sm:w-24">Placed on:</span>
-                      <span className="text-gray-900">{new Date(selectedOrder.createdAt).toLocaleString()}</span>
+                      <span className="text-gray-500">{new Date(selectedOrder.createdAt).toLocaleString()}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span className="text-gray-500 w-full sm:w-24">Payment Method:</span>
-                      <span className="text-gray-900">{selectedOrder.paymentMethod}</span>
+                      <span className="text-gray-500">{selectedOrder.paymentMethod}</span>
                     </div>
                   </div>
                 </div>
@@ -294,15 +294,15 @@ export default function MyOrdersPage() {
                   <div className="space-y-2 text-xs sm:text-sm bg-gray-50 rounded-lg p-3 sm:p-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span className="text-gray-500 w-full sm:w-24">Name:</span>
-                      <span className="text-gray-900">{selectedOrder.customer.name}</span>
+                      <span className="text-gray-500">{selectedOrder.customer.name}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                       <span className="text-gray-500 w-full sm:w-24">Phone:</span>
-                      <span className="text-gray-900">{selectedOrder.customer.phone}</span>
+                      <span className="text-gray-500">{selectedOrder.customer.phone}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
                       <span className="text-gray-500 w-full sm:w-24">Address:</span>
-                      <span className="text-gray-900 flex-1 break-words">{selectedOrder.customer.address}</span>
+                      <span className="text-gray-500 flex-1 break-words">{selectedOrder.customer.address}</span>
                     </div>
                   </div>
                 </div>
@@ -317,7 +317,7 @@ export default function MyOrdersPage() {
                       {selectedOrder.items.map((item, idx) => (
                         <div key={idx} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-gray-200 last:border-0 gap-2 sm:gap-0">
                           <div>
-                            <p className="font-medium text-gray-900 text-sm sm:text-base">{item.name}</p>
+                            <p className="font-medium text-gray-500 text-sm sm:text-base">{item.name}</p>
                             <p className="text-xs sm:text-sm text-gray-500">Quantity: {item.qty}</p>
                           </div>
                           <p className="font-semibold text-green-600 text-sm sm:text-base">₹{item.price * item.qty}</p>
@@ -325,7 +325,7 @@ export default function MyOrdersPage() {
                       ))}
                     </div>
                     <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                      <span className="font-bold text-gray-900">Total</span>
+                      <span className="font-bold text-gray-500">Total</span>
                       <span className="text-lg sm:text-xl font-bold text-green-600">₹{selectedOrder.total}</span>
                     </div>
                   </div>

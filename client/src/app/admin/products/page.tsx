@@ -518,7 +518,7 @@ export default function AdminProductsPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     />
                   </div>
                   <div>
@@ -531,7 +531,7 @@ export default function AdminProductsPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, category: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all bg-white text-sm"
                     >
                       <option value="Snacks">Snacks</option>
                       <option value="Main Course">Main Course</option>
@@ -555,7 +555,7 @@ export default function AdminProductsPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, price: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     />
                   </div>
                   <div>
@@ -568,7 +568,7 @@ export default function AdminProductsPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, mrp: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     />
                   </div>
                   <div>
@@ -582,7 +582,7 @@ export default function AdminProductsPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, stock: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     />
                   </div>
                 </div>
@@ -599,7 +599,7 @@ export default function AdminProductsPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, weight: e.target.value })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                       placeholder="e.g., 250 g"
                     />
                   </div>
@@ -616,7 +616,7 @@ export default function AdminProductsPage() {
                           fssaiLicense: e.target.value,
                         })
                       }
-                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                      className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     />
                   </div>
                 </div>
@@ -733,7 +733,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
-                    className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                    className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     placeholder="Brief description of the product"
                   />
                 </div>
@@ -751,7 +751,7 @@ export default function AdminProductsPage() {
                         longDescription: e.target.value,
                       })
                     }
-                    className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                    className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     placeholder="Detailed description including history and cultural significance"
                   />
                 </div>
@@ -767,7 +767,7 @@ export default function AdminProductsPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, ingredients: e.target.value })
                     }
-                    className="w-full p-2 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
+                    className="w-full p-2 border border-gray-200 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm"
                     placeholder="WHEAT FLOUR, SOOJI, COCONUT, REFINED OIL, DESI GHEE, SUGAR"
                   />
                 </div>
