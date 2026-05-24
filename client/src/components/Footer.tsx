@@ -52,7 +52,7 @@ export default function Footer() {
                 <span className="text-base sm:text-lg">📷</span>
               </a>
               <a 
-                href="https://youtube.com/@swaadnation" 
+                href="https://youtube.com/@swaadnation-03" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
@@ -61,7 +61,7 @@ export default function Footer() {
                 <span className="text-base sm:text-lg">▶️</span>
               </a>
               <a 
-                href="https://wa.me/917754037920" 
+                href="https://wa.me/919508273820" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-500 transition-colors"
@@ -169,11 +169,11 @@ export default function Footer() {
               <li className="flex items-center gap-3 justify-center sm:justify-start">
                 <span className="text-green-500 text-lg">📞</span>
                 <a 
-                  href="tel:+917754037920" 
+                  href="tel:+919508273820" 
                   className="text-xs sm:text-sm hover:text-green-500 transition-colors"
                   style={{ color: settings.footerTextColor }}
                 >
-                  +91 77540 37920
+                  +91 95082 73820
                 </a>
               </li>
               <li className="flex items-center gap-3 justify-center sm:justify-start">
@@ -202,7 +202,7 @@ export default function Footer() {
             <div>
               <p className="text-[10px] sm:text-xs" style={{ color: settings.footerTextColor }}>
                 <span className="text-gray-400">Manufactured and marketed by:</span><br />
-                Swad Nation, Motihari, East Champaran, Bihar, 845401, India
+                Swaad Nation, Motihari, East Champaran, Bihar, 845401, India
               </p>
             </div>
             <div>
