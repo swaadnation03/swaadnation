@@ -14,20 +14,25 @@ const allowedOrigins = [
   "http://localhost:5000",
   "https://swaadnation.vercel.app",
   "https://swaadnation-api.onrender.com",
+  "https://swaadnation.com", // Add this
+  "https://www.swaadnation.com",
 ];
 
-app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
@@ -70,9 +75,10 @@ const mongoose = require("mongoose");
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI)
+mongoose
+  .connect(MONGODB_URI)
   .then(() => console.log("DB Connected ✅"))
-  .catch(err => console.log("DB Connection Error:", err));
+  .catch((err) => console.log("DB Connection Error:", err));
 
 app.get("/", (req, res) => {
   res.send("API Running 🚀");
