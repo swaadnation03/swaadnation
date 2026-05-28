@@ -29,6 +29,7 @@ export default function Footer() {
                   src="/logo.png"
                   alt="Swaad Nation Logo"
                   fill
+                  sizes="(max-width: 640px) 40px, 48px"
                   className="object-contain"
                 />
               </div>

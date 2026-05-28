@@ -2,14 +2,24 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    domains: ['localhost', 'res.cloudinary.com', 'swaadnation-api.onrender.com'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'swaadnation-api.onrender.com',
+      },
+    ],
   },
   // Ignore build errors for sitemap
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 }
 

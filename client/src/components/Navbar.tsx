@@ -79,8 +79,10 @@ export default function Navbar({ websiteSettings }: { websiteSettings?: any }) {
                     src="/logo.png"
                     alt="Swaad Nation Logo"
                     fill
+                    sizes="(max-width: 640px) 32px, 40px"
                     className="object-contain group-hover:scale-105 transition-transform duration-200"
                     priority
+                    loading="eager"
                   />
                 </div>
                 <div className="flex flex-col">

@@ -121,13 +121,6 @@ body.website-bg-set {
   background-color: inherit;
 }
 
-/* Test - make all cards transparent */
-.bg-white, 
-.bg-gray-50,
-.bg-gray-100 {
-  background-color: transparent !important;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

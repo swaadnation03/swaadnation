@@ -161,8 +161,10 @@ export default function HomePage() {
                       src="/logo.png"
                       alt="Swaad Nation Logo"
                       fill
+                      sizes="(max-width: 640px) 80px, (max-width: 768px) 96px, (max-width: 1024px) 112px, 128px"
                       className="object-contain drop-shadow-2xl"
                       priority
+                      loading="eager"
                     />
                   </div>
                 </div>
@@ -231,8 +233,10 @@ export default function HomePage() {
                       src="/logo.png"
                       alt="Swaad Nation Logo"
                       fill
+                      sizes="(max-width: 640px) 80px, (max-width: 768px) 96px, (max-width: 1024px) 112px, 128px"
                       className="object-contain drop-shadow-2xl"
                       priority
+                      loading="eager"
                     />
                   </div>
                 </div>
@@ -516,7 +520,7 @@ export default function HomePage() {
 
         {/* CTA Section - Responsive */}
         {/* CTA Section - Responsive */}
-        <section className="bg-gradient-to-r from-green-700 to-green-600 py-12 sm:py-16">
+        <section className="bg-linear-to-r from-green-700 to-green-600 py-12 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 px-4">
               Ready to taste the authentic Champaran?
@@ -527,7 +531,7 @@ export default function HomePage() {
               href="#products"
               className="inline-block bg-white text-green-700 px-6 py-2 sm:px-8 sm:py-3 rounded-full font-semibold hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
             >
-              Browse Menu
+              Shop Now
             </Link>
           </div>
         </section>

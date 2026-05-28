@@ -1,9 +1,35 @@
 {
   "name": "Swaad Nation",
   "short_name": "SwaadNation",
-  "description": "Authentic Bihari snacks",
+  "description": "Authentic Bihari snacks - Taste of Champaran",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#2E7D32",
-  "background_color": "#FFFFFF"
+  "background_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
