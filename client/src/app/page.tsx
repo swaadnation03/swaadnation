@@ -11,6 +11,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import FounderSection from "@/components/FounderSection";
 import Image from "next/image";
 import { API_URL } from '@/lib/api';
+import { FaInstagram, FaYoutube, FaFacebook } from "react-icons/fa";
 
 
 type Product = {
@@ -487,7 +488,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full hover:shadow-lg transition-all hover:scale-105 text-sm sm:text-base"
               >
-                <span className="text-xl sm:text-2xl">📷</span>
+                <FaInstagram className="text-xl sm:text-2xl" />
                 <span className="font-semibold hidden xs:inline">
                   Instagram
                 </span>
@@ -498,7 +499,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 sm:gap-3 bg-red-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full hover:shadow-lg transition-all hover:scale-105 text-sm sm:text-base"
               >
-                <span className="text-xl sm:text-2xl">▶️</span>
+                <FaYoutube className="text-xl sm:text-2xl" />
                 <span className="font-semibold hidden xs:inline">YouTube</span>
               </a>
               <a
@@ -507,7 +508,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 sm:gap-3 bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full hover:shadow-lg transition-all hover:scale-105 text-sm sm:text-base"
               >
-                <span className="text-xl sm:text-2xl">📘</span>
+                <FaFacebook className="text-xl sm:text-2xl" />
                 <span className="font-semibold hidden xs:inline">Facebook</span>
               </a>
             </div>

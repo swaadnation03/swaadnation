@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useWebsiteSettings } from "@/context/WebsiteSettingsContext";
+import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 
 
 export default function Footer() {
@@ -50,7 +51,7 @@ export default function Footer() {
                 className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
                 aria-label="Instagram"
               >
-                <span className="text-base sm:text-lg">📷</span>
+                <FaInstagram className="text-base sm:text-lg" />
               </a>
               <a 
                 href="https://youtube.com/@swaadnation-03" 
@@ -59,7 +60,7 @@ export default function Footer() {
                 className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
                 aria-label="YouTube"
               >
-                <span className="text-base sm:text-lg">▶️</span>
+                <FaYoutube className="text-base sm:text-lg" />
               </a>
               <a 
                 href="https://wa.me/919508273820" 
@@ -68,7 +69,7 @@ export default function Footer() {
                 className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-green-500 transition-colors"
                 aria-label="WhatsApp"
               >
-                <span className="text-base sm:text-lg">💬</span>
+                <FaWhatsapp className="text-base sm:text-lg" />
               </a>
             </div>
           </div>
