@@ -170,11 +170,11 @@ export default function Footer() {
               <li className="flex items-center gap-3 justify-center sm:justify-start">
                 <span className="text-green-500 text-lg">📞</span>
                 <a 
-                  href="tel:+919508273820" 
+                  href="tel:+916202540380" 
                   className="text-xs sm:text-sm hover:text-green-500 transition-colors"
                   style={{ color: settings.footerTextColor }}
                 >
-                  +91 95082 73820
+                  +91 62025 40380
                 </a>
               </li>
               <li className="flex items-center gap-3 justify-center sm:justify-start">
@@ -221,7 +221,7 @@ export default function Footer() {
             © {currentYear} Swaad Nation. All rights reserved.
           </p>
           <p className="text-[10px] sm:text-xs mt-1" style={{ color: settings.footerTextColor }}>
-            Made with ❤️ in Bihar | Authentic Bihari flavors since 2024
+            Made with ❤️ in Bihar | Authentic Bihari flavors since 2026
           </p>
         </div>
       </div>

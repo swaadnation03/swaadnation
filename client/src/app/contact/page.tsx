@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -20,8 +24,10 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Thank you for your message! We\'re setting up the contact form backend. We\'ll get back to you soon!');
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    alert(
+      "Thank you for your message! We're setting up the contact form backend. We'll get back to you soon!",
+    );
+    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
   };
 
   return (
@@ -42,16 +48,23 @@ export default function ContactPage() {
                 <h3 className="text-xl font-semibold text-gray-800 mb-2 flex items-center gap-2">
                   <span className="text-2xl">📧</span> Email
                 </h3>
-                <a href="mailto:support@swaadnation.com" className="text-orange-600 hover:underline">
-                  support@swaadnation.com
+                <a
+                  href="mailto:
+swaadnation03@gmail.com"
+                  className="text-orange-600 hover:underline"
+                >
+                  swaadnation03@gmail.com
                 </a>
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2 flex items-center gap-2">
                   <span className="text-2xl">📱</span> Phone
                 </h3>
-                <a href="tel:+919876543210" className="text-orange-600 hover:underline">
-                  +91 9876543210
+                <a
+                  href="tel:+916202540380"
+                  className="text-orange-600 hover:underline"
+                >
+                  +91 62025 40380
                 </a>
               </div>
               <div>
@@ -59,17 +72,40 @@ export default function ContactPage() {
                   <span className="text-2xl">📍</span> Address
                 </h3>
                 <p className="text-gray-600">
-                  Swaad Nation HQ<br />
-                  India
+                  Motihari, East Champaran
+                  <br />
+                  Bihar, 845401, India
                 </p>
               </div>
               <div className="pt-4 border-t">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">Follow Us</h3>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                  Follow Us
+                </h3>
                 <div className="flex gap-4">
-                  <a href="#" className="text-orange-600 hover:text-orange-700 text-2xl">🌐</a>
-                  <a href="#" className="text-orange-600 hover:text-orange-700 text-2xl">📘</a>
-                  <a href="#" className="text-orange-600 hover:text-orange-700 text-2xl">🐦</a>
-                  <a href="#" className="text-orange-600 hover:text-orange-700 text-2xl">📷</a>
+                  <a
+                    href="#"
+                    className="text-orange-600 hover:text-orange-700 text-2xl"
+                  >
+                    🌐
+                  </a>
+                  <a
+                    href="#"
+                    className="text-orange-600 hover:text-orange-700 text-2xl"
+                  >
+                    📘
+                  </a>
+                  <a
+                    href="#"
+                    className="text-orange-600 hover:text-orange-700 text-2xl"
+                  >
+                    🐦
+                  </a>
+                  <a
+                    href="#"
+                    className="text-orange-600 hover:text-orange-700 text-2xl"
+                  >
+                    📷
+                  </a>
                 </div>
               </div>
             </div>
@@ -80,7 +116,8 @@ export default function ContactPage() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <div className="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
                 <p className="text-blue-700 text-sm">
-                  ⚙️ <strong>Note:</strong> This form is under development. Your message will be stored when backend is ready.
+                  ⚙️ <strong>Note:</strong> This form is under development. Your
+                  message will be stored when backend is ready.
                 </p>
               </div>
 
