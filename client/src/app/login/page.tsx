@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { API_URL } from "@/lib/api";
 
 
 export default function LoginPage() {
@@ -12,6 +13,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
+  const [resendLoading, setResendLoading] = useState(false);
   
   const { login } = useAuth();
   const router = useRouter();
@@ -19,15 +22,47 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setUnverifiedEmail("");
     setLoading(true);
 
     try {
       await login(email, password);
       router.push("/");
     } catch (err: any) {
+      // Check if error is about unverified email
+      if (err.message.includes("verify your email")) {
+        setUnverifiedEmail(email);
+      }
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    try {
+      setResendLoading(true);
+      const res = await fetch(`${API_URL}/api/auth/resend-verification`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: unverifiedEmail }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to resend verification");
+        return;
+      }
+
+      setError("");
+      alert("Verification email sent! Please check your inbox.");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -62,11 +97,30 @@ export default function LoginPage() {
             
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border border-red-400 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-lg flex items-center gap-2 text-sm sm:text-base">
-                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{error}</span>
+              <div>
+                <div className="bg-red-50 border border-red-400 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{error}</span>
+                </div>
+
+                {/* Resend Verification Option */}
+                {unverifiedEmail && (
+                  <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-blue-700 text-sm mb-2">
+                      Check your email to verify your account, or:
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleResendVerification}
+                      disabled={resendLoading}
+                      className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm font-medium"
+                    >
+                      {resendLoading ? "Sending..." : "Resend Verification Email"}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             

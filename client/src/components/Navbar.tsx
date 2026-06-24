@@ -329,7 +329,7 @@ export default function Navbar({ websiteSettings }: { websiteSettings?: any }) {
         {/* Mobile Menu Header with Logo and Text */}
         <div className="p-4 border-b border-gray-100 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-2" onClick={closeMobileMenu}>
-            {/* <div className="relative w-8 h-8">
+            <div className="relative w-8 h-8">
               <Image
                 src="/logo.png"
                 alt="Swaad Nation Logo"
@@ -342,7 +342,7 @@ export default function Navbar({ websiteSettings }: { websiteSettings?: any }) {
                 Swaad Nation
               </span>
               <span className="text-[10px] text-orange-500 -mt-0.5">Taste of Champaran</span>
-            </div> */}
+            </div>
           </Link>
           <button
             onClick={closeMobileMenu}

@@ -1,93 +1,42 @@
 // const nodemailer = require("nodemailer");
 
-// // Email configuration
-// const emailConfig = {
-//   // For Gmail (development)
-//   gmail: {
-//     service: "gmail",
-//     auth: {
-//       user: process.env.EMAIL_USER, // your Gmail address
-//       pass: process.env.EMAIL_PASS, // your Gmail app password
-//     },
+// // Create transporter directly (simpler)
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,           // Changed from 465 to 587
+//   secure: false,       // false for port 587
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
 //   },
-  
-//   // For production (SendGrid, Mailgun, AWS SES)
-//   sendgrid: {
-//     host: "smtp.sendgrid.net",
-//     port: 587,
-//     secure: false,
-//     auth: {
-//       user: "apikey",
-//       pass: process.env.SENDGRID_API_KEY,
-//     },
-//   },
-// };
+// });
 
-// // Use Gmail for development, SendGrid for production
-// const transporter = nodemailer.createTransport(
-//   process.env.NODE_ENV === "production" ? emailConfig.sendgrid : emailConfig.gmail
-// );
-
-// // Verify connection
+// // Verify connection with detailed logging
 // transporter.verify((error, success) => {
 //   if (error) {
-//     console.log("Email service error:", error);
+//     console.error("❌ Email service ERROR:", error.message);
+//     console.error("Full error details:", error);
+//     console.error("Make sure you have:");
+//     console.error("1. EMAIL_USER set to your Gmail address");
+//     console.error("2. EMAIL_PASS set to your Gmail App Password (not regular password)");
+//     console.error("3. Gmail account has 2-Factor Authentication enabled");
+//     console.error("4. App Password generated at: https://myaccount.google.com/apppasswords");
 //   } else {
-//     console.log("Email service ready ✅");
+//     console.log("✅ Email service ready - Connection verified!");
+//     console.log(`📧 Configured sender: ${process.env.EMAIL_USER}`);
 //   }
 // });
 
 // module.exports = { transporter };
 
 
-const nodemailer = require("nodemailer");
 
-// Create transporter directly (simpler)
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,           // Changed from 465 to 587
-  secure: false,       // false for port 587
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
 
-// Verify connection
-transporter.verify((error, success) => {
-  if (error) {
-    console.log("Email service error:", error);
-  } else {
-    console.log("Email service ready ✅");
-  }
-});
 
-module.exports = { transporter };
 
-// const nodemailer = require("nodemailer");
 
-// let transporter = null;
+const { Resend } = require("resend");
 
-// const getTransporter = async () => {
-//   if (!transporter) {
-//     // Create a test account on Ethereal (free, no setup needed)
-//     const testAccount = await nodemailer.createTestAccount();
-    
-//     transporter = nodemailer.createTransport({
-//       host: "smtp.ethereal.email",
-//       port: 587,
-//       secure: false,
-//       auth: {
-//         user: testAccount.user,
-//         pass: testAccount.pass,
-//       },
-//     });
-    
-//     console.log("📧 Email service ready (Ethereal)");
-//     console.log("📨 Preview emails at: https://ethereal.email/login");
-//     console.log("Username:", testAccount.user);
-//   }
-//   return transporter;
-// };
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-// module.exports = { getTransporter };
+module.exports = { resend };

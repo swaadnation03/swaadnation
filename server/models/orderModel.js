@@ -51,50 +51,80 @@
 //     type: String,
 //     default: "Pending",
 //   },
-// }, { 
+// }, {
 //   timestamps: true,
 //   // This ensures only defined fields are saved
-//   strict: true 
+//   strict: true
 // });
 
 // module.exports = mongoose.model("Order", orderSchema);
 
-
-
-
-
 const mongoose = require("mongoose");
 
-const orderSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  customer: {
-    name: String,
-    phone: String,
-    address: String,
-  },
-  items: [
-    {
-      name: String,
-      price: Number,
-      qty: Number,
+const orderSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-  ],
-  total: Number,
-  paymentMethod: {
-    type: String,
-    default: "COD",
+    customer: {
+      name: String,
+      phone: String,
+      address: String,
+    },
+    items: [
+      {
+        name: String,
+        price: Number,
+        qty: Number,
+      },
+    ],
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+    deliveryFee: {
+      type: Number,
+      default: 0,
+    },
+    discount: {
+      type: Number,
+      default: 0,
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
+    paymentMethod: {
+      type: String,
+      default: "COD",
+      enum: ["COD", "Online"],
+    },
+    paymentStatus: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "initiated", "paid", "failed"],
+    },
+    paymentId: String,
+    status: {
+      type: String,
+      default: "Pending",
+      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
+    },
+    appliedCoupon: {
+      code: String,
+      discount: Number,
+    },
+    confirmationEmailSent: {
+      type: Boolean,
+      default: false,
+    },
   },
-  status: {
-    type: String,
-    default: "Pending",
+  {
+    timestamps: true,
+    strict: true,
   },
-}, { 
-  timestamps: true,
-  strict: true 
-});
+);
 
 module.exports = mongoose.model("Order", orderSchema);

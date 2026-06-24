@@ -1,7 +1,49 @@
+// const jwt = require("jsonwebtoken");
+// const User = require("../models/userModel");
+
+// // Get JWT secret from environment variable
+// const JWT_SECRET = process.env.JWT_SECRET;
+
+// // Verify token middleware
+// const protect = async (req, res, next) => {
+//   let token;
+
+//   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+//     try {
+//       token = req.headers.authorization.split(" ")[1];
+//       const decoded = jwt.verify(token, JWT_SECRET);
+//       req.user = await User.findById(decoded.id).select("-password");
+//       next();
+//     } catch (error) {
+//       console.error(error);
+//       res.status(401).json({ error: "Not authorized, token failed" });
+//     }
+//   }
+
+//   if (!token) {
+//     res.status(401).json({ error: "Not authorized, no token" });
+//   }
+// };
+
+// // Admin only middleware
+// const admin = (req, res, next) => {
+//   if (req.user && req.user.role === "admin") {
+//     next();
+//   } else {
+//     res.status(403).json({ error: "Not authorized as admin" });
+//   }
+// };
+
+// module.exports = { protect, admin };
+
+
+
+
+
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const logger = require("../utils/logger");
 
-// Get JWT secret from environment variable
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Verify token middleware
@@ -12,26 +54,33 @@ const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
-      next();
+
+      req.user = await User.findById(decoded.id).select(
+        "-password -emailVerificationToken -emailVerificationTokenExpires"
+      );
+
+      // ✅ Handle deleted user whose JWT is still valid
+      if (!req.user) {
+        return res.status(401).json({ error: "User no longer exists" });
+      }
+
+      return next();
     } catch (error) {
-      console.error(error);
-      res.status(401).json({ error: "Not authorized, token failed" });
+      logger.warn({ err: error }, "Token verification failed");
+      return res.status(401).json({ error: "Not authorized, token failed" });
     }
   }
 
-  if (!token) {
-    res.status(401).json({ error: "Not authorized, no token" });
-  }
+  return res.status(401).json({ error: "Not authorized, no token" });
 };
 
 // Admin only middleware
 const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
-    next();
-  } else {
-    res.status(403).json({ error: "Not authorized as admin" });
+    return next();
   }
+  logger.warn({ userId: req.user?._id }, "Non-admin attempted admin route");
+  return res.status(403).json({ error: "Not authorized as admin" });
 };
 
 module.exports = { protect, admin };

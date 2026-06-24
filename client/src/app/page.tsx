@@ -276,7 +276,7 @@ export default function HomePage() {
         <OfferSlider />
 
         {/* About Section - Responsive */}
-        <section className="py-12 sm:py-16 bg-white">
+        {/* <section className="py-12 sm:py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
@@ -298,7 +298,58 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-        </section>
+        </section> */}
+
+        {/* About Section - Responsive */}
+<section className="py-16 sm:py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-10 sm:mb-12">
+
+      {/* Tag */}
+      <span className="inline-block text-xs font-semibold tracking-widest uppercase text-green-700 bg-green-50 px-4 py-1.5 rounded-full mb-4">
+        Our Story
+      </span>
+
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+        About Swaad Nation
+      </h2>
+      <div className="w-12 h-0.5 bg-green-600 mx-auto mb-8 rounded-full"></div>
+
+      {/* Body text in serif for warmth */}
+      <p className="font-serif text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed tracking-wide px-4 mb-6">
+        Swaad Nation is a growing Indian brand built on the values of{" "}
+        <span className="text-gray-900 font-medium not-italic">purity, quality, and trust.</span>{" "}
+        Every product is crafted with great care and high hygiene standards — so you
+        always get a safe and reliable experience. We bring you the comfort of homemade
+        taste with consistent quality in every bite.
+      </p>
+      <p className="font-serif text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed tracking-wide px-4">
+        Our goal is to offer high-quality products at a reasonable price, so you never
+        have to choose between taste and value. Customer trust is our top priority, and
+        as we grow, we plan to introduce a wide range of food and beverage products —
+        making Swaad Nation a brand you can always rely on.
+      </p>
+    </div>
+
+    {/* Three pillars */}
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mt-10">
+      {[
+        { icon: "🌿", label: "Purity", sub: "Clean, natural ingredients in every product" },
+        { icon: "⭐", label: "Quality", sub: "Consistent flavour, every single time" },
+        { icon: "🤝", label: "Trust", sub: "Your satisfaction drives everything we do" },
+      ].map(({ icon, label, sub }) => (
+        <div
+          key={label}
+          className="flex flex-col items-center text-center bg-gray-50 rounded-xl border border-gray-100 px-5 py-6"
+        >
+          <span className="text-3xl mb-3">{icon}</span>
+          <p className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{label}</p>
+          <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">{sub}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
         {/* Products Section */}
         <section id="products" className="py-12 sm:py-16 bg-gray-50">
@@ -417,10 +468,10 @@ export default function HomePage() {
                         </div>
                       )}
 
-                      <p className="text-gray-600 text-xs sm:text-sm mt-2 line-clamp-2">
+                      {/* <p className="text-gray-600 text-xs sm:text-sm mt-2 line-clamp-2">
                         {product.description ||
                           "Delicious authentic Bihari delicacy"}
-                      </p>
+                      </p> */}
                       <div className="flex justify-between items-center mt-3">
                         <div>
                           <span className="text-base sm:text-lg md:text-xl font-bold text-green-600">

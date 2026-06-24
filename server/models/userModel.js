@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -33,6 +34,13 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  // Email verification fields
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailVerificationToken: String,
+  emailVerificationTokenExpires: Date,
 }, { timestamps: true });
 
 // Hash password before saving
@@ -52,5 +60,15 @@ userSchema.pre("save", async function(next) {
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
+
+// Generate email verification token
+userSchema.methods.generateEmailVerificationToken = function() {
+  const token = crypto.randomBytes(32).toString("hex");
+  this.emailVerificationToken = crypto.createHash("sha256").update(token).digest("hex");
+  this.emailVerificationTokenExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+  return token;
+};
+
+userSchema.index({ emailVerificationToken: 1 }, { sparse: true });
 
 module.exports = mongoose.model("User", userSchema);

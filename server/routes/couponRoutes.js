@@ -3,7 +3,13 @@ const router = express.Router();
 const Coupon = require("../models/Coupon");
 const Order = require("../models/orderModel");
 const { protect, admin } = require("../middleware/authMiddleware");
+const rateLimit = require("express-rate-limit");
 
+const couponLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  message: { error: "Too many coupon attempts. Please try again later." },
+});
 // ============ ADMIN ROUTES ============
 
 // Get all coupons (admin only)
@@ -75,7 +81,7 @@ router.delete("/admin/:id", protect, admin, async (req, res) => {
 // ============ PUBLIC ROUTES ============
 
 // Validate coupon (authenticated users)
-router.post("/validate", protect, async (req, res) => {
+router.post("/validate", protect, couponLimiter, async (req, res) => {
   try {
     const { code, cartTotal } = req.body;
     const userId = req.user._id;

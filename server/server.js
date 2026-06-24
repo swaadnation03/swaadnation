@@ -1,97 +1,88 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const path = require("path");
+const mongoose = require("mongoose");
+const logger = require("./utils/logger");
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// ✅ Updated CORS Configuration - Allow multiple origins
+// ─── CORS ─────────────────────────────────────────────────────────
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5000",
   "https://swaadnation.vercel.app",
   "https://swaadnation-api.onrender.com",
-  "https://swaadnation.com", // Add this
+  "https://swaadnation.com",
   "https://www.swaadnation.com",
 ];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
+    origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
-          "The CORS policy for this site does not allow access from the specified Origin.";
-        return callback(new Error(msg), false);
+      if (!allowedOrigins.includes(origin)) {
+        return callback(
+          new Error("CORS policy: Origin not allowed"),
+          false
+        );
       }
       return callback(null, true);
     },
     credentials: true,
-  }),
+  })
 );
 
-app.use(express.json());
+// ─── Body parsing ─────────────────────────────────────────────────
+app.use(express.json({ limit: "1mb" })); // ✅ prevents giant JSON body abuse
 
-// ✅ IMPORTANT: Serve static files from uploads directory
-// This line MUST be before your routes
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Routes
-const orderRoutes = require("./routes/orderRoutes");
-const productRoutes = require("./routes/productRoutes");
-const authRoutes = require("./routes/authRoutes");
-const uploadRoutes = require("./routes/uploadRoutes");
-const couponRoutes = require("./routes/couponRoutes");
-const reviewRoutes = require("./routes/reviewRoutes");
-const stockAlertRoutes = require("./routes/stockAlertRoutes");
-const paymentRoutes = require("./routes/paymentRoutes");
-const offerRoutes = require("./routes/offerRoutes");
-const heroRoutes = require("./routes/heroRoutes");
-const websiteRoutes = require("./routes/websiteRoutes");
-
-app.use("/api/orders", orderRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/coupons", couponRoutes);
-app.use("/api/reviews", reviewRoutes);
-app.use("/api/stock-alerts", stockAlertRoutes);
-app.use("/api/payments", paymentRoutes);
-app.use("/api/offers", offerRoutes);
-app.use("/api/hero", heroRoutes);
-app.use("/api/website", websiteRoutes);
-
-// Add this after your routes to see what routes are registered
-console.log("Registered routes:");
-console.log("- /api/products");
-console.log("- /api/hero");
-console.log("- /api/auth");
-
-const mongoose = require("mongoose");
-
-const MONGODB_URI = process.env.MONGODB_URI;
-
+// ─── Database ─────────────────────────────────────────────────────
+// ✅ Connect before registering routes so DB is ready when first request hits
 mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log("DB Connected ✅"))
-  .catch((err) => console.log("DB Connection Error:", err));
+  .connect(process.env.MONGODB_URI)
+  .then(() => logger.info("MongoDB connected"))
+  .catch((err) => {
+    logger.error({ err }, "MongoDB connection failed");
+    process.exit(1); // ✅ crash fast — don't run without a DB
+  });
 
+// ─── Routes ───────────────────────────────────────────────────────
+app.use("/api/orders",       require("./routes/orderRoutes"));
+app.use("/api/products",     require("./routes/productRoutes"));
+app.use("/api/auth",         require("./routes/authRoutes"));
+app.use("/api/upload",       require("./routes/uploadRoutes"));
+app.use("/api/coupons",      require("./routes/couponRoutes"));
+app.use("/api/reviews",      require("./routes/reviewRoutes"));
+app.use("/api/stock-alerts", require("./routes/stockAlertRoutes"));
+app.use("/api/payments",     require("./routes/paymentRoutes"));
+app.use("/api/offers",       require("./routes/offerRoutes"));
+app.use("/api/hero",         require("./routes/heroRoutes"));
+app.use("/api/website",      require("./routes/websiteRoutes"));
+
+// ─── Health check ─────────────────────────────────────────────────
 app.get("/", (req, res) => {
-  res.send("API Running 🚀");
+  res.json({ status: "ok", message: "Swaad Nation API 🚀" });
 });
 
-app.get("/test-email", async (req, res) => {
-  const { sendWelcomeEmail } = require("./services/emailService");
-  const testUser = { name: "Test User", email: "your-email@gmail.com" };
-  await sendWelcomeEmail(testUser, req);
-  res.send("Test email sent! Check your inbox.");
+// ─── 404 handler ──────────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
 });
 
+// ─── Global error handler ─────────────────────────────────────────
+// ✅ Catches any unhandled errors from routes and returns clean JSON
+app.use((err, req, res, next) => {
+  logger.error({ err, method: req.method, url: req.url }, "Unhandled error");
+  res.status(err.status || 500).json({
+    error: process.env.NODE_ENV === "production"
+      ? "Something went wrong"  // ✅ don't leak stack traces in production
+      : err.message,
+  });
+});
+
+// ─── Start server ─────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info({ port: PORT }, "Server started");
 });

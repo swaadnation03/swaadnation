@@ -1,10 +1,152 @@
+// const express = require("express");
+// const router = express.Router();
+// const upload = require("../config/multer"); // Use Cloudinary upload
+// const Offer = require("../models/Offer");
+// const { protect, admin } = require("../middleware/authMiddleware");
+
+// // GET all active offers (public)
+// router.get("/", async (req, res) => {
+//   try {
+//     const now = new Date();
+//     const offers = await Offer.find({
+//       isActive: true,
+//       startDate: { $lte: now },
+//       endDate: { $gte: now },
+//     }).sort({ order: 1 });
+//     res.json(offers);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+// // GET all offers (admin only)
+// router.get("/admin/all", protect, admin, async (req, res) => {
+//   try {
+//     const offers = await Offer.find({}).sort({ order: 1 });
+//     res.json(offers);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+// // CREATE offer with image upload (admin only) - NOW USES CLOUDINARY
+// router.post("/admin/create", protect, admin, upload.single("image"), async (req, res) => {
+//   try {
+//     const { title, description, link, startDate, endDate, order, discount, isActive } = req.body;
+    
+//     if (!title) {
+//       return res.status(400).json({ error: "Title is required" });
+//     }
+//     if (!description) {
+//       return res.status(400).json({ error: "Description is required" });
+//     }
+//     if (!endDate) {
+//       return res.status(400).json({ error: "End date is required" });
+//     }
+//     if (!req.file) {
+//       return res.status(400).json({ error: "Image is required" });
+//     }
+
+//     const offer = await Offer.create({
+//       title: title,
+//       description: description,
+//       image: req.file.path, // Cloudinary URL (not local path)
+//       link: link || "",
+//       startDate: startDate ? new Date(startDate) : new Date(),
+//       endDate: new Date(endDate),
+//       order: parseInt(order) || 0,
+//       discount: discount || "",
+//       isActive: isActive === "true" || isActive === true,
+//     });
+
+//     res.status(201).json(offer);
+//   } catch (error) {
+//     console.error("Create offer error:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+// // UPDATE offer (admin only)
+// router.put("/admin/:id", protect, admin, upload.single("image"), async (req, res) => {
+//   try {
+//     const { title, description, link, startDate, endDate, order, discount, isActive } = req.body;
+    
+//     const offer = await Offer.findById(req.params.id);
+//     if (!offer) {
+//       return res.status(404).json({ error: "Offer not found" });
+//     }
+
+//     if (title) offer.title = title;
+//     if (description) offer.description = description;
+//     if (link !== undefined) offer.link = link;
+//     if (startDate) offer.startDate = new Date(startDate);
+//     if (endDate) offer.endDate = new Date(endDate);
+//     if (order !== undefined) offer.order = parseInt(order);
+//     if (discount !== undefined) offer.discount = discount;
+//     if (isActive !== undefined) offer.isActive = isActive === "true" || isActive === true;
+
+//     // Update image if new one uploaded (now uses Cloudinary)
+//     if (req.file) {
+//       offer.image = req.file.path; // Cloudinary URL
+//     }
+
+//     await offer.save();
+//     res.json(offer);
+//   } catch (error) {
+//     console.error("Update offer error:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+// // DELETE offer (admin only)
+// router.delete("/admin/:id", protect, admin, async (req, res) => {
+//   try {
+//     const offer = await Offer.findByIdAndDelete(req.params.id);
+//     if (!offer) {
+//       return res.status(404).json({ error: "Offer not found" });
+//     }
+//     res.json({ message: "Offer deleted successfully" });
+//   } catch (error) {
+//     console.error("Delete offer error:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+// module.exports = router;
+
+
+
+
+
+
+
 const express = require("express");
 const router = express.Router();
-const upload = require("../config/multer"); // Use Cloudinary upload
+const multer = require("multer");
+const rateLimit = require("express-rate-limit");
+const upload = require("../config/multer");
 const Offer = require("../models/Offer");
 const { protect, admin } = require("../middleware/authMiddleware");
+const logger = require("../utils/logger");
 
-// GET all active offers (public)
+// ✅ Shared Multer wrapper that returns clean JSON errors
+const handleUpload = (req, res, next) => {
+  upload.single("image")(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({ error: "File too large. Maximum size is 10MB." });
+      }
+      return res.status(400).json({ error: err.message });
+    }
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+};
+
+// ─── Public ───────────────────────────────────────────────────────
+
 router.get("/", async (req, res) => {
   try {
     const now = new Date();
@@ -15,42 +157,36 @@ router.get("/", async (req, res) => {
     }).sort({ order: 1 });
     res.json(offers);
   } catch (error) {
+    logger.error({ err: error }, "Fetch offers error");
     res.status(500).json({ error: error.message });
   }
 });
 
-// GET all offers (admin only)
+// ─── Admin ────────────────────────────────────────────────────────
+
 router.get("/admin/all", protect, admin, async (req, res) => {
   try {
     const offers = await Offer.find({}).sort({ order: 1 });
     res.json(offers);
   } catch (error) {
+    logger.error({ err: error }, "Admin fetch offers error");
     res.status(500).json({ error: error.message });
   }
 });
 
-// CREATE offer with image upload (admin only) - NOW USES CLOUDINARY
-router.post("/admin/create", protect, admin, upload.single("image"), async (req, res) => {
+router.post("/admin/create", protect, admin, handleUpload, async (req, res) => {
   try {
     const { title, description, link, startDate, endDate, order, discount, isActive } = req.body;
-    
-    if (!title) {
-      return res.status(400).json({ error: "Title is required" });
-    }
-    if (!description) {
-      return res.status(400).json({ error: "Description is required" });
-    }
-    if (!endDate) {
-      return res.status(400).json({ error: "End date is required" });
-    }
-    if (!req.file) {
-      return res.status(400).json({ error: "Image is required" });
-    }
+
+    if (!title) return res.status(400).json({ error: "Title is required" });
+    if (!description) return res.status(400).json({ error: "Description is required" });
+    if (!endDate) return res.status(400).json({ error: "End date is required" });
+    if (!req.file) return res.status(400).json({ error: "Image is required" });
 
     const offer = await Offer.create({
-      title: title,
-      description: description,
-      image: req.file.path, // Cloudinary URL (not local path)
+      title,
+      description,
+      image: req.file.path,
       link: link || "",
       startDate: startDate ? new Date(startDate) : new Date(),
       endDate: new Date(endDate),
@@ -59,55 +195,51 @@ router.post("/admin/create", protect, admin, upload.single("image"), async (req,
       isActive: isActive === "true" || isActive === true,
     });
 
+    logger.info({ offerId: offer._id, adminId: req.user._id }, "Offer created");
     res.status(201).json(offer);
   } catch (error) {
-    console.error("Create offer error:", error);
+    logger.error({ err: error }, "Create offer error");
     res.status(500).json({ error: error.message });
   }
 });
 
-// UPDATE offer (admin only)
-router.put("/admin/:id", protect, admin, upload.single("image"), async (req, res) => {
+router.put("/admin/:id", protect, admin, handleUpload, async (req, res) => {
   try {
-    const { title, description, link, startDate, endDate, order, discount, isActive } = req.body;
-    
     const offer = await Offer.findById(req.params.id);
-    if (!offer) {
-      return res.status(404).json({ error: "Offer not found" });
-    }
+    if (!offer) return res.status(404).json({ error: "Offer not found" });
 
-    if (title) offer.title = title;
-    if (description) offer.description = description;
+    const { title, description, link, startDate, endDate, order, discount, isActive } = req.body;
+
+    if (title !== undefined) offer.title = title;
+    if (description !== undefined) offer.description = description;
     if (link !== undefined) offer.link = link;
-    if (startDate) offer.startDate = new Date(startDate);
-    if (endDate) offer.endDate = new Date(endDate);
+    if (startDate !== undefined) offer.startDate = new Date(startDate);
+    if (endDate !== undefined) offer.endDate = new Date(endDate);
     if (order !== undefined) offer.order = parseInt(order);
     if (discount !== undefined) offer.discount = discount;
     if (isActive !== undefined) offer.isActive = isActive === "true" || isActive === true;
 
-    // Update image if new one uploaded (now uses Cloudinary)
-    if (req.file) {
-      offer.image = req.file.path; // Cloudinary URL
-    }
+    // ✅ Update image if new one uploaded
+    // Note: old Cloudinary image is orphaned — consider adding cleanup later
+    if (req.file) offer.image = req.file.path;
 
     await offer.save();
+    logger.info({ offerId: offer._id, adminId: req.user._id }, "Offer updated");
     res.json(offer);
   } catch (error) {
-    console.error("Update offer error:", error);
+    logger.error({ err: error }, "Update offer error");
     res.status(500).json({ error: error.message });
   }
 });
 
-// DELETE offer (admin only)
 router.delete("/admin/:id", protect, admin, async (req, res) => {
   try {
     const offer = await Offer.findByIdAndDelete(req.params.id);
-    if (!offer) {
-      return res.status(404).json({ error: "Offer not found" });
-    }
+    if (!offer) return res.status(404).json({ error: "Offer not found" });
+    logger.info({ offerId: req.params.id, adminId: req.user._id }, "Offer deleted");
     res.json({ message: "Offer deleted successfully" });
   } catch (error) {
-    console.error("Delete offer error:", error);
+    logger.error({ err: error }, "Delete offer error");
     res.status(500).json({ error: error.message });
   }
 });

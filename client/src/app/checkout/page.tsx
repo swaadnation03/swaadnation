@@ -119,53 +119,57 @@ export default function CheckoutPage() {
   };
 
   const handleOrder = async () => {
-    if (!validateForm()) return;
+  if (!validateForm()) return;
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
+  if (!user) {
+    alert("Please login to place order");
+    router.push("/login");
+    return;
+  }
 
-    if (cart.length === 0) {
-      alert("Cart is empty");
-      return;
-    }
+  setIsSubmitting(true);
 
-    if (!user) {
-      alert("Please login to place order");
-      router.push("/login");
-      return;
-    }
+  const cleanItems = cart.map(({ _id, ...item }) => ({
+    name: item.name,
+    price: item.price,
+    qty: item.qty,
+  }));
 
-    setIsSubmitting(true);
+  const orderData = {
+    customer: form,
+    items: cleanItems,
+    subtotal: subtotal,
+    deliveryFee: deliveryFee,
+    discount: discount,
+    total: total,
+    paymentMethod: paymentMethod === "cod" ? "COD" : "Online",
+    paymentStatus: paymentMethod === "cod" ? "pending" : "initiated",
+    status: "Pending",
+    appliedCoupon: appliedCoupon
+      ? {
+          code: appliedCoupon.code,
+          discount: appliedCoupon.discount,
+        }
+      : null,
+  };
 
-    const cleanItems = cart.map(({ _id, ...item }) => ({
-      name: item.name,
-      price: item.price,
-      qty: item.qty,
-    }));
-
-    const orderData = {
-      customer: form,
-      items: cleanItems,
-      subtotal: subtotal,
-      deliveryFee: deliveryFee,
-      discount: discount,
-      total: total,
-      paymentMethod: paymentMethod === "cod" ? "COD" : "Online",
-      paymentStatus: paymentMethod === "cod" ? "pending" : "initiated",
-      status: "Pending",
-      appliedCoupon: appliedCoupon
-        ? {
-            code: appliedCoupon.code,
-            discount: appliedCoupon.discount,
-          }
-        : null,
-    };
-
-    try {
+  try {
+    if (paymentMethod === "cod") {
+      // For COD: Create order immediately
       const res = await fetch(`${API_URL}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user?.token}`,
         },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({
+          ...orderData,
+          paymentStatus: "pending",
+          status: "Pending",
+        }),
       });
 
       if (!res.ok) {
@@ -173,40 +177,35 @@ export default function CheckoutPage() {
         throw new Error(errorData.error || "Failed to place order");
       }
 
-      const data = await res.json();
-      console.log("ORDER SAVED:", data);
-
-      if (paymentMethod === "cod") {
-        clearCart();
-        router.push("/order-success");
-      } else {
-        // For online payment, store order ID and show payment modal
-        setSavedOrderId(data._id);
-        setShowPaymentModal(true);
-        setIsSubmitting(false);
-      }
-    } catch (err) {
-      console.log("ERROR:", err);
-      alert(
-        "Error placing order: " +
-          (err instanceof Error ? err.message : "Unknown error"),
-      );
+      clearCart();
+      setIsSubmitting(false);
+      router.push("/order-success");
+    } else {
+      // For online payment: Store order data temporarily and show payment modal (DON'T CREATE ORDER YET)
+      setSavedOrderId(JSON.stringify(orderData));
+      setShowPaymentModal(true);
       setIsSubmitting(false);
     }
-  };
+  } catch (err) {
+    console.log("ERROR:", err);
+    alert("Error placing order: " + (err instanceof Error ? err.message : "Unknown error"));
+    setIsSubmitting(false);
+  }
+};
 
   // Handle successful payment
   const handlePaymentSuccess = () => {
-    trackPurchase(savedOrderId!, total, cart);
     clearCart();
     setShowPaymentModal(false);
+    setSavedOrderId(null);
     router.push("/order-success");
   };
 
-  // Handle payment failure
+  // Handle payment failure - order will be deleted by PaymentModal
   const handlePaymentFailure = () => {
-    alert("Payment failed. You can retry or choose Cash on Delivery.");
+    alert("Payment cancelled or failed. Order has been removed.");
     setShowPaymentModal(false);
+    setSavedOrderId(null);
   };
 
   if (cart.length === 0) {
@@ -405,23 +404,7 @@ export default function CheckoutPage() {
                   Payment Method
                 </h2>
                 <div className="space-y-3">
-                  {/* COD Option - Commented out as requested */}
-                  {/* <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="cod"
-                      checked={paymentMethod === "cod"}
-                      onChange={() => setPaymentMethod("cod")}
-                      className="w-4 h-4 text-green-600 focus:ring-green-500"
-                    />
-                    <div className="flex-1">
-                      <span className="font-medium text-gray-900">Cash on Delivery</span>
-                      <p className="text-sm text-gray-500">Pay when you receive the order</p>
-                    </div>
-                    <span className="text-2xl">💵</span>
-                  </label> */}
-
+                  {/* Only Online Payment - COD removed */}                
                   <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                     <input
                       type="radio"
@@ -486,7 +469,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Payment Modal - Responsive */}
-      {showPaymentModal && savedOrderId && (
+      {/* {showPaymentModal && savedOrderId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full mx-4">
             <div className="bg-gradient-to-r from-green-600 to-green-500 -m-6 mb-4 p-4 rounded-t-lg">
@@ -497,19 +480,94 @@ export default function CheckoutPage() {
             </p>
             <PaymentModal
               amount={total}
-              orderId={savedOrderId}
+              orderData={savedOrderId}
               onSuccess={handlePaymentSuccess}
               onFailure={handlePaymentFailure}
             />
             <button
-              onClick={() => setShowPaymentModal(false)}
+              onClick={() => {
+                setShowPaymentModal(false);
+                setSavedOrderId(null);
+                alert("Payment cancelled.");
+              }}
               className="w-full mt-3 text-gray-500 hover:text-gray-700 transition-colors text-sm sm:text-base"
             >
               Cancel
             </button>
           </div>
         </div>
-      )}
+      )} */}
+
+      {showPaymentModal && savedOrderId && (
+  <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+    <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+      
+      {/* Header */}
+      <div className="bg-gradient-to-br from-emerald-700 via-green-700 to-emerald-800 px-6 pt-6 pb-8 relative overflow-hidden">
+        {/* subtle decorative pattern */}
+        <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/5" />
+        <div className="absolute -right-2 top-10 w-16 h-16 rounded-full bg-white/5" />
+        
+        <div className="relative flex items-start justify-between">
+          <div>
+            <p className="text-emerald-100 text-xs font-medium tracking-wide uppercase mb-1">
+              Swaad Nation
+            </p>
+            <h2 className="text-xl font-bold text-white">
+              Complete your payment
+            </h2>
+          </div>
+          <button
+            onClick={() => {
+              setShowPaymentModal(false);
+              setSavedOrderId(null);
+            }}
+            className="text-white/70 hover:text-white transition-colors rounded-full p-1 hover:bg-white/10"
+            aria-label="Close"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Amount card — overlapping the header for depth */}
+      <div className="px-6 -mt-5 relative">
+        <div className="bg-white rounded-xl shadow-md border border-stone-100 px-5 py-4 flex items-center justify-between">
+          <span className="text-sm text-stone-500">Amount due</span>
+          <span className="text-2xl font-bold text-emerald-700">
+            ₹{total.toLocaleString("en-IN")}
+          </span>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="px-6 pt-5 pb-6">
+        <p className="text-stone-600 text-sm text-center mb-5">
+          Pay securely to confirm your order. We'll start preparing your meal the moment payment goes through.
+        </p>
+
+        <PaymentModal
+          amount={total}
+          orderData={savedOrderId}
+          onSuccess={handlePaymentSuccess}
+          onFailure={handlePaymentFailure}
+        />
+
+        <button
+          onClick={() => {
+            setShowPaymentModal(false);
+            setSavedOrderId(null);
+          }}
+          className="w-full mt-4 text-stone-400 hover:text-stone-600 transition-colors text-sm font-medium py-2"
+        >
+          Cancel and edit order
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }
