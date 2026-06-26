@@ -129,7 +129,7 @@ export default function HomePage() {
         description="Buy authentic Bihari snacks online. Thekua, Nimki, Litti Chokha and more traditional Champaran delicacies delivered to your doorstep."
       />
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[#fdf8f0]">
         {/* Hero Section with Logo - FULLY RESPONSIVE */}
         {hero?.backgroundType === "video" && hero?.videoUrl ? (
           // Video Background Hero
@@ -300,7 +300,7 @@ export default function HomePage() {
         </section> */}
 
         {/* About Section - Responsive */}
-        <section className="py-16 sm:py-20 bg-white">
+        <section className="py-16 sm:py-20 bg-[#fffdf9]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10 sm:mb-12">
               {/* Tag */}
@@ -354,7 +354,7 @@ export default function HomePage() {
               ].map(({ icon, label, sub }) => (
                 <div
                   key={label}
-                  className="flex flex-col items-center text-center bg-gray-50 rounded-xl border border-gray-100 px-5 py-6"
+                  className="flex flex-col items-center text-center bg-[#fdf6ec] rounded-xl border border-gray-100 px-5 py-6"
                 >
                   <span className="text-3xl mb-3">{icon}</span>
                   <p className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
@@ -370,7 +370,7 @@ export default function HomePage() {
         </section>
 
         {/* Products Section */}
-        <section id="products" className="py-12 sm:py-16 bg-gray-50">
+        <section id="products" className="py-12 sm:py-16 bg-[#fef9f2]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
@@ -427,20 +427,21 @@ export default function HomePage() {
                   <Link
                     key={product._id}
                     href={`/product/${product._id}`}
-                    className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+                    className="group bg-[#fffdf9] rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
                   >
                     {/* NEW — shows full product image without cropping */}
-<div className="h-52 sm:h-56 md:h-60 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden p-3">
-  {product.imageFront ? (
-    <img
-      src={product.imageFront}
-      alt={product.name}
-      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
-      onError={(e) => {
-        (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x200?text=No+Image";
-      }}
-    />
-  ) : (
+                    <div className="h-52 sm:h-56 md:h-60 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden p-3">
+                      {product.imageFront ? (
+                        <img
+                          src={product.imageFront}
+                          alt={product.name}
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src =
+                              "https://via.placeholder.com/300x200?text=No+Image";
+                          }}
+                        />
+                      ) : (
                         <div className="text-5xl sm:text-6xl">
                           {product.category === "Snacks" && "🍪"}
                           {product.category === "Main Course" && "🍛"}
@@ -545,7 +546,7 @@ export default function HomePage() {
         <ReviewCarousel />
 
         {/* Social Handles Section - Responsive */}
-        <section className="py-12 sm:py-16 bg-white">
+        <section className="py-12 sm:py-16 bg-[#fffdf9]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
               Connect With Us
@@ -591,7 +592,7 @@ export default function HomePage() {
 
         {/* CTA Section - Responsive */}
         {/* CTA Section - Responsive */}
-        <section className="bg-linear-to-r from-green-700 to-green-600 py-12 sm:py-16">
+        <section className="bg-gradient-to-r from-green-700 to-green-600 py-12 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 px-4">
               Ready to taste the authentic Champaran?
