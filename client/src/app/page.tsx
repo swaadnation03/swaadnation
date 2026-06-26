@@ -10,9 +10,8 @@ import ReviewCarousel from "@/components/ReviewCarousel";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import FounderSection from "@/components/FounderSection";
 import Image from "next/image";
-import { API_URL } from '@/lib/api';
+import { API_URL } from "@/lib/api";
 import { FaInstagram, FaYoutube, FaFacebook } from "react-icons/fa";
-
 
 type Product = {
   _id: string;
@@ -301,55 +300,74 @@ export default function HomePage() {
         </section> */}
 
         {/* About Section - Responsive */}
-<section className="py-16 sm:py-20 bg-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="text-center mb-10 sm:mb-12">
+        <section className="py-16 sm:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10 sm:mb-12">
+              {/* Tag */}
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-green-700 bg-green-50 px-4 py-1.5 rounded-full mb-4">
+                Our Story
+              </span>
 
-      {/* Tag */}
-      <span className="inline-block text-xs font-semibold tracking-widest uppercase text-green-700 bg-green-50 px-4 py-1.5 rounded-full mb-4">
-        Our Story
-      </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                About Swaad Nation
+              </h2>
+              <div className="w-12 h-0.5 bg-green-600 mx-auto mb-8 rounded-full"></div>
 
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-        About Swaad Nation
-      </h2>
-      <div className="w-12 h-0.5 bg-green-600 mx-auto mb-8 rounded-full"></div>
+              {/* Body text in serif for warmth */}
+              <p className="font-serif text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed tracking-wide px-4 mb-6">
+                Swaad Nation is a growing Indian brand built on the values of{" "}
+                <span className="text-gray-900 font-medium not-italic">
+                  purity, quality, and trust.
+                </span>{" "}
+                Every product is crafted with great care and high hygiene
+                standards — so you always get a safe and reliable experience. We
+                bring you the comfort of homemade taste with consistent quality
+                in every bite.
+              </p>
+              <p className="font-serif text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed tracking-wide px-4">
+                Our goal is to offer high-quality products at a reasonable
+                price, so you never have to choose between taste and value.
+                Customer trust is our top priority, and as we grow, we plan to
+                introduce a wide range of food and beverage products — making
+                Swaad Nation a brand you can always rely on.
+              </p>
+            </div>
 
-      {/* Body text in serif for warmth */}
-      <p className="font-serif text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed tracking-wide px-4 mb-6">
-        Swaad Nation is a growing Indian brand built on the values of{" "}
-        <span className="text-gray-900 font-medium not-italic">purity, quality, and trust.</span>{" "}
-        Every product is crafted with great care and high hygiene standards — so you
-        always get a safe and reliable experience. We bring you the comfort of homemade
-        taste with consistent quality in every bite.
-      </p>
-      <p className="font-serif text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed tracking-wide px-4">
-        Our goal is to offer high-quality products at a reasonable price, so you never
-        have to choose between taste and value. Customer trust is our top priority, and
-        as we grow, we plan to introduce a wide range of food and beverage products —
-        making Swaad Nation a brand you can always rely on.
-      </p>
-    </div>
-
-    {/* Three pillars */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mt-10">
-      {[
-        { icon: "🌿", label: "Purity", sub: "Clean, natural ingredients in every product" },
-        { icon: "⭐", label: "Quality", sub: "Consistent flavour, every single time" },
-        { icon: "🤝", label: "Trust", sub: "Your satisfaction drives everything we do" },
-      ].map(({ icon, label, sub }) => (
-        <div
-          key={label}
-          className="flex flex-col items-center text-center bg-gray-50 rounded-xl border border-gray-100 px-5 py-6"
-        >
-          <span className="text-3xl mb-3">{icon}</span>
-          <p className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{label}</p>
-          <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">{sub}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+            {/* Three pillars */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mt-10">
+              {[
+                {
+                  icon: "🌿",
+                  label: "Purity",
+                  sub: "Clean, natural ingredients in every product",
+                },
+                {
+                  icon: "⭐",
+                  label: "Quality",
+                  sub: "Consistent flavour, every single time",
+                },
+                {
+                  icon: "🤝",
+                  label: "Trust",
+                  sub: "Your satisfaction drives everything we do",
+                },
+              ].map(({ icon, label, sub }) => (
+                <div
+                  key={label}
+                  className="flex flex-col items-center text-center bg-gray-50 rounded-xl border border-gray-100 px-5 py-6"
+                >
+                  <span className="text-3xl mb-3">{icon}</span>
+                  <p className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
+                    {label}
+                  </p>
+                  <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
+                    {sub}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* Products Section */}
         <section id="products" className="py-12 sm:py-16 bg-gray-50">
@@ -411,17 +429,18 @@ export default function HomePage() {
                     href={`/product/${product._id}`}
                     className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
                   >
-                    <div className="h-36 xs:h-40 sm:h-44 md:h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center overflow-hidden">
-                      {product.imageFront ? (
-                        <img
-                          src={product.imageFront}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x200?text=No+Image";
-                          }}
-                        />
-                      ) : (
+                    {/* NEW — shows full product image without cropping */}
+<div className="h-52 sm:h-56 md:h-60 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden p-3">
+  {product.imageFront ? (
+    <img
+      src={product.imageFront}
+      alt={product.name}
+      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+      onError={(e) => {
+        (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x200?text=No+Image";
+      }}
+    />
+  ) : (
                         <div className="text-5xl sm:text-6xl">
                           {product.category === "Snacks" && "🍪"}
                           {product.category === "Main Course" && "🍛"}
