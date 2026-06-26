@@ -221,10 +221,6 @@
 
 
 
-
-
-
-
 const express = require("express");
 const router = express.Router();
 const Review = require("../models/Review");
@@ -233,7 +229,7 @@ const Order = require("../models/orderModel");
 const { protect, admin } = require("../middleware/authMiddleware");
 const logger = require("../utils/logger");
 
-// ─── Shared helper — recalculate product rating after any review change ───
+// ─── Shared helper ────────────────────────────────────────────────
 const recalculateProductRating = async (productId) => {
   const allReviews = await Review.find({ product: productId, isApproved: true });
   const totalRating = allReviews.reduce((sum, r) => sum + r.rating, 0);
@@ -251,7 +247,7 @@ router.post("/", protect, async (req, res) => {
     const userId = req.user._id;
     const userName = req.user.name;
 
-    // ✅ Validate inputs upfront — return clean 400s instead of Mongoose 500s
+    // Validate inputs
     if (!productId || !rating || !title || !comment) {
       return res.status(400).json({ error: "productId, rating, title and comment are required" });
     }
@@ -265,7 +261,7 @@ router.post("/", protect, async (req, res) => {
       return res.status(400).json({ error: "Comment must be 500 characters or less" });
     }
 
-    // ✅ Check product exists
+    // Check product exists
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -277,14 +273,19 @@ router.post("/", protect, async (req, res) => {
       return res.status(400).json({ error: "You have already reviewed this product" });
     }
 
-    // Check if user has purchased this product
-    // Note: isVerifiedPurchase will always be false until productId is added
-    // to order items at checkout time
+    // ✅ ENFORCE: User must have a delivered order containing this product
+    // Matches by product name since productId isn't stored on order items yet
     const hasPurchased = await Order.findOne({
       user: userId,
-      "items.productId": productId,
       status: "Delivered",
+      "items.name": product.name,
     });
+
+    if (!hasPurchased) {
+      return res.status(403).json({
+        error: "You can only review products you have purchased and received.",
+      });
+    }
 
     const review = await Review.create({
       product: productId,
@@ -293,10 +294,9 @@ router.post("/", protect, async (req, res) => {
       rating: Number(rating),
       title: title.trim(),
       comment: comment.trim(),
-      isVerifiedPurchase: !!hasPurchased,
+      isVerifiedPurchase: true, // always true now — enforced above
     });
 
-    // Recalculate product rating (only approved reviews count)
     await recalculateProductRating(productId);
 
     logger.info({ userId, productId, rating }, "Review submitted");
@@ -310,7 +310,6 @@ router.post("/", protect, async (req, res) => {
 // ─── Get Approved Reviews (home page carousel) ────────────────────
 router.get("/approved", async (req, res) => {
   try {
-    // ✅ Cap limit to prevent huge queries
     const minRating = Math.min(5, Math.max(0, parseInt(req.query.minRating) || 0));
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 10));
 
@@ -332,7 +331,6 @@ router.get("/approved", async (req, res) => {
 router.get("/product/:productId", async (req, res) => {
   try {
     const { productId } = req.params;
-    // ✅ Sanitize pagination params
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 10));
 
@@ -360,7 +358,6 @@ router.get("/rating/:productId", async (req, res) => {
   try {
     const { productId } = req.params;
 
-    // ✅ Check product exists before aggregating
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -402,7 +399,6 @@ router.post("/:id/helpful", protect, async (req, res) => {
       return res.status(404).json({ error: "Review not found" });
     }
 
-    // ✅ Prevent users from marking their own review as helpful
     if (review.user.toString() === req.user._id.toString()) {
       return res.status(400).json({ error: "You cannot mark your own review as helpful" });
     }
@@ -452,7 +448,6 @@ router.put("/admin/:id/approve", protect, admin, async (req, res) => {
     review.isApproved = true;
     await review.save();
 
-    // ✅ Use shared helper instead of duplicating logic
     await recalculateProductRating(review.product);
 
     logger.info({ reviewId: review._id, adminId: req.user._id }, "Review approved");
@@ -471,7 +466,6 @@ router.delete("/admin/:id", protect, admin, async (req, res) => {
       return res.status(404).json({ error: "Review not found" });
     }
 
-    // ✅ Use shared helper instead of duplicating logic
     await recalculateProductRating(review.product);
 
     logger.info({ reviewId: review._id, adminId: req.user._id }, "Review deleted");

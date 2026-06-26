@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import StarRating from "./StarRating";
 import { API_URL } from '@/lib/api';
-
+import Link from "next/link";
 
 type Review = {
   _id: string;
@@ -37,6 +37,12 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
+
+  // ✅ New state — track whether user can review
+  const [canReview, setCanReview] = useState<"loading" | "yes" | "not_purchased" | "already_reviewed" | "not_logged_in">("loading");
+
   const [stats, setStats] = useState({
     averageRating: 0,
     totalReviews: 0,
@@ -48,11 +54,57 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
     fetchRatingStats();
   }, [productId]);
 
+  useEffect(() => {
+    if (!user) {
+      setCanReview("not_logged_in");
+      return;
+    }
+    checkCanReview();
+  }, [user, productId, reviews]);
+
+  const checkCanReview = async () => {
+    if (!user) return;
+    setCanReview("loading");
+
+    try {
+      // Check if user already reviewed this product
+      const alreadyReviewed = reviews.some(r => r.userName === user.name);
+      if (alreadyReviewed) {
+        setCanReview("already_reviewed");
+        return;
+      }
+
+      // ✅ Check if user has a delivered order containing this product
+      const res = await fetch(`${API_URL}/api/orders/myorders`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+
+      if (!res.ok) {
+        setCanReview("not_purchased");
+        return;
+      }
+
+      const orders = await res.json();
+
+      // Get the product name to match against order items
+      const productRes = await fetch(`${API_URL}/api/products/${productId}`);
+      const product = await productRes.json();
+
+      const hasDeliveredOrder = orders.some(
+        (order: any) =>
+          order.status === "Delivered" &&
+          order.items.some((item: any) => item.name === product.name)
+      );
+
+      setCanReview(hasDeliveredOrder ? "yes" : "not_purchased");
+    } catch {
+      setCanReview("not_purchased");
+    }
+  };
+
   const fetchReviews = async () => {
     try {
-      const res = await fetch(
-        `${API_URL}/api/reviews/product/${productId}`,
-      );
+      const res = await fetch(`${API_URL}/api/reviews/product/${productId}`);
       const data = await res.json();
       setReviews(data.reviews || []);
     } catch (error) {
@@ -64,20 +116,12 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
 
   const fetchRatingStats = async () => {
     try {
-      const res = await fetch(
-        `${API_URL}/api/reviews/rating/${productId}`,
-      );
+      const res = await fetch(`${API_URL}/api/reviews/rating/${productId}`);
       const data = await res.json();
       setStats({
         averageRating: data.averageRating || 0,
         totalReviews: data.totalReviews || 0,
-        ratingDistribution: data.ratingDistribution || {
-          1: 0,
-          2: 0,
-          3: 0,
-          4: 0,
-          5: 0,
-        },
+        ratingDistribution: data.ratingDistribution || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       });
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -86,12 +130,12 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      alert("Please login to leave a review");
-      return;
-    }
+    if (!user) return;
 
     setSubmitting(true);
+    setSubmitError("");
+    setSubmitSuccess("");
+
     try {
       const res = await fetch(`${API_URL}/api/reviews`, {
         method: "POST",
@@ -99,28 +143,24 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify({
-          productId,
-          rating,
-          title,
-          comment,
-        }),
+        body: JSON.stringify({ productId, rating, title, comment }),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        alert("Review submitted! It will appear after approval.");
+        setSubmitSuccess("Review submitted! It will appear after approval.");
         setTitle("");
         setComment("");
         setRating(5);
+        setCanReview("already_reviewed");
         fetchReviews();
         fetchRatingStats();
       } else {
-        const error = await res.json();
-        alert(error.error || "Failed to submit review");
+        setSubmitError(data.error || "Failed to submit review");
       }
-    } catch (error) {
-      console.error("Error submitting review:", error);
-      alert("Failed to submit review");
+    } catch {
+      setSubmitError("Failed to submit review. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -130,39 +170,148 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
     return stats.ratingDistribution[star as keyof RatingDistribution] || 0;
   };
 
-  if (loading)
-    return <div className="text-center py-6 sm:py-8 text-sm sm:text-base">Loading reviews...</div>;
+  // ✅ Render the correct review form state
+  const renderReviewFormArea = () => {
+    if (canReview === "loading") {
+      return (
+        <div className="bg-gray-50 border rounded-lg p-4 sm:p-6 mb-5 sm:mb-6 text-center text-sm text-gray-400">
+          Checking eligibility...
+        </div>
+      );
+    }
+
+    if (canReview === "not_logged_in") {
+      return (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 sm:p-6 mb-5 sm:mb-6 text-center">
+          <p className="text-amber-800 font-medium text-sm sm:text-base mb-2">
+            Want to share your experience?
+          </p>
+          <p className="text-amber-700 text-xs sm:text-sm mb-3">
+            Please log in to write a review.
+          </p>
+          <Link
+            href="/login"
+            className="inline-block bg-green-600 text-white px-5 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors"
+          >
+            Login to Review
+          </Link>
+        </div>
+      );
+    }
+
+    if (canReview === "not_purchased") {
+      return (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6 mb-5 sm:mb-6 text-center">
+          <p className="text-blue-800 font-medium text-sm sm:text-base mb-1">
+            Purchase required to review
+          </p>
+          <p className="text-blue-600 text-xs sm:text-sm">
+            Only customers who have received this product can leave a review.
+          </p>
+        </div>
+      );
+    }
+
+    if (canReview === "already_reviewed") {
+      return (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 mb-5 sm:mb-6 text-center">
+          <p className="text-green-700 font-medium text-sm sm:text-base">
+            ✓ You've already reviewed this product. Thank you!
+          </p>
+        </div>
+      );
+    }
+
+    // canReview === "yes"
+    return (
+      <div className="bg-gray-50 border rounded-lg p-4 sm:p-6 mb-5 sm:mb-6">
+        <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-base sm:text-lg">
+          Write a Review
+        </h4>
+
+        {submitError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg">
+            {submitError}
+          </div>
+        )}
+        {submitSuccess && (
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg">
+            {submitSuccess}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmitReview} className="space-y-3 sm:space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+            <StarRating rating={rating} onRating={setRating} size={24} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Title <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Summarize your experience"
+              maxLength={100}
+              className="w-full p-2.5 sm:p-3 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-sm sm:text-base"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Review <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              rows={4}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Share your experience with this product"
+              maxLength={500}
+              className="w-full p-2.5 sm:p-3 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-y text-sm sm:text-base"
+              required
+            />
+            <p className="text-xs text-gray-400 mt-1 text-right">{comment.length}/500</p>
+          </div>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-green-600 text-white px-5 sm:px-6 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
+          >
+            {submitting ? "Submitting..." : "Submit Review"}
+          </button>
+        </form>
+      </div>
+    );
+  };
+
+  if (loading) return (
+    <div className="text-center py-6 sm:py-8 text-sm sm:text-base text-gray-400">
+      Loading reviews...
+    </div>
+  );
 
   return (
     <div className="mt-6 sm:mt-8">
       <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Customer Reviews</h3>
 
-      {/* Rating Summary - Responsive */}
+      {/* Rating Summary */}
       <div className="bg-gray-50 rounded-lg p-4 sm:p-6 mb-5 sm:mb-6">
         <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8">
-          
-          {/* Average Rating */}
           <div className="text-center">
             <div className="text-3xl sm:text-4xl font-bold text-gray-900">
               {stats.averageRating || 0}
             </div>
-            <StarRating
-              rating={Math.round(stats.averageRating)}
-              readonly
-              size={16}
-            />
+            <StarRating rating={Math.round(stats.averageRating)} readonly size={16} />
             <div className="text-xs sm:text-sm text-gray-500 mt-1">
               Based on {stats.totalReviews} reviews
             </div>
           </div>
-          
-          {/* Rating Distribution Bars */}
           <div className="flex-1 w-full space-y-1">
             {[5, 4, 3, 2, 1].map((star) => {
               const count = getRatingCount(star);
-              const percentage =
-                stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0;
-
+              const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0;
               return (
                 <div key={star} className="flex items-center gap-1 sm:gap-2">
                   <span className="text-xs sm:text-sm w-6 sm:w-8">{star} ★</span>
@@ -180,60 +329,10 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
         </div>
       </div>
 
-      {/* Write Review Form - Responsive */}
-      {user && (
-        <div className="bg-gray-50 border rounded-lg p-4 sm:p-6 mb-5 sm:mb-6">
-          <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-base sm:text-lg">Write a Review</h4>
-          <form onSubmit={handleSubmitReview} className="space-y-3 sm:space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Rating
-              </label>
-              <StarRating rating={rating} onRating={setRating} size={24} />
-            </div>
-            
-            {/* Title Input */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Title <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Summarize your experience"
-                className="w-full p-2.5 sm:p-3 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
-                required
-              />
-            </div>
+      {/* ✅ Review form — shows correct state based on eligibility */}
+      {renderReviewFormArea()}
 
-            {/* Review Textarea */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Review <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                rows={4}
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Share your experience with this product"
-                className="w-full p-2.5 sm:p-3 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-y text-sm sm:text-base"
-                required
-              />
-            </div>
-            
-            <button
-              type="submit"
-              disabled={submitting}
-              className="bg-green-600 text-white px-5 sm:px-6 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
-            >
-              {submitting ? "Submitting..." : "Submit Review"}
-            </button>
-          </form>
-        </div>
-      )}
-
-      {/* Reviews List - Responsive */}
+      {/* Reviews List */}
       <div className="space-y-3 sm:space-y-4">
         {reviews.length === 0 ? (
           <p className="text-gray-500 text-center py-6 sm:py-8 text-sm sm:text-base">
@@ -257,7 +356,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                   <StarRating rating={review.rating} readonly size={14} />
                 </div>
                 <span className="text-xs text-gray-500">
-                  {new Date(review.createdAt).toLocaleDateString()}
+                  {new Date(review.createdAt).toLocaleDateString("en-IN")}
                 </span>
               </div>
               <h4 className="font-semibold text-gray-900 mt-2 text-sm sm:text-base">
