@@ -91,7 +91,7 @@ export default function RelatedProducts({ productId, category }: RelatedProducts
   }
 
   return (
-    <div className="mt-8 sm:mt-12">
+    <div className="mt-8 sm:mt-12 ">
       {/* Section Header with Tabs - Responsive */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-5 sm:mb-6">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-0">
@@ -133,7 +133,7 @@ export default function RelatedProducts({ productId, category }: RelatedProducts
           <Link
             key={product._id}
             href={`/product/${product._id}`}
-            className="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 border border-gray-100"
+            className="group bg-[#fff6e8] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 border border-gray-100"
           >
             {/* Product Image - Responsive height */}
             <div className="h-32 xs:h-36 sm:h-40 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden">
@@ -191,7 +191,7 @@ export default function RelatedProducts({ productId, category }: RelatedProducts
               <button
                 onClick={(e) => handleAddToCart(e, product)}
                 disabled={product.stock === 0}
-                className="w-full mt-2 sm:mt-3 bg-gray-100 text-gray-700 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs md:text-sm font-medium hover:bg-green-600 hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full mt-2 sm:mt-3 bg-[#fef9f2] text-gray-700 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs md:text-sm font-medium hover:bg-green-600 hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
               </button>

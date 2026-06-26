@@ -222,6 +222,8 @@ export default function OfferSlider() {
     try {
       const res = await fetch(`${API_URL}/api/offers`);
       const data = await res.json();
+      console.log("Offers:", data);
+    console.log("Length:", data.length);
       setOffers(data);
     } catch (error) {
       console.error("Error fetching offers:", error);
@@ -237,10 +239,10 @@ export default function OfferSlider() {
   if (loading || offers.length === 0) return null;
 
   return (
-    <div className="w-full bg-gradient-to-r from-orange-50 to-green-50 py-6 sm:py-8 md:py-12">
+    <div className="w-full bg-[#FFF2DF] py-6 sm:py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-4 sm:mb-6 md:mb-8">
+        <div className="text-center mb-4 sm:mb-6 md:mb-8 ">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">
             🎉 Festival Special Offers 🎉
           </h2>

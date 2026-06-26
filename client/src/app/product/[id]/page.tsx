@@ -129,7 +129,7 @@ export default function ProductDetailPage() {
         product={product}
       />
 
-      <div className="min-h-screen bg-gray-50 py-6 sm:py-8 md:py-12">
+      <div className="min-h-screen bg-[#FFF2DF] py-6 sm:py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb - Responsive */}
           <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500 flex flex-wrap items-center gap-1">
@@ -146,14 +146,14 @@ export default function ProductDetailPage() {
             </span>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-[#fff6e8] rounded-lg shadow-lg overflow-hidden">
             {/* Product Info Grid - Responsive */}
             <div className="flex flex-col md:flex-row gap-6 md:gap-8 p-4 sm:p-6 md:p-8">
               
               {/* Product Images Section - Responsive */}
               <div className="w-full md:w-1/2">
                 <div
-                  className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer"
+                  className="relative aspect-square bg-[#ffffff] rounded-lg overflow-hidden cursor-pointer"
                   onClick={() => setShowFront(!showFront)}
                 >
                   {showFront ? (

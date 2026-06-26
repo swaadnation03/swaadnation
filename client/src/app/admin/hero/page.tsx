@@ -168,7 +168,7 @@ export default function AdminHeroPage() {
 
   return (
     <ProtectedRoute adminOnly>
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-orange-50 py-6 sm:py-8">
+      <div className="min-h-screen bg-[#fff2dfbe] py-6 sm:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Header */}

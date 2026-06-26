@@ -6,7 +6,7 @@ export default function FounderSection() {
   const [imageError, setImageError] = useState(false);
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-r from-green-50 to-orange-50">
+    <section className="py-12 sm:py-16 bg-[#FFF2DF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
           

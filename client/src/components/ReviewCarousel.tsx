@@ -107,7 +107,7 @@ export default function ReviewCarousel() {
   const totalSlides = Math.max(0, reviews.length - slidesPerView + 1);
 
   return (
-    <div className="py-12 sm:py-16 bg-white">
+    <div className="py-12 sm:py-16 bg-[#FFF2DF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Header - Responsive */}

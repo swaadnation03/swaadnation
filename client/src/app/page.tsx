@@ -300,7 +300,7 @@ export default function HomePage() {
         </section> */}
 
         {/* About Section - Responsive */}
-        <section className="py-16 sm:py-20 bg-[#fffdf9]">
+        <section className="py-16 sm:py-20 bg-[#FFF2DF]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10 sm:mb-12">
               {/* Tag */}
@@ -370,7 +370,7 @@ export default function HomePage() {
         </section>
 
         {/* Products Section */}
-        <section id="products" className="py-12 sm:py-16 bg-[#fef9f2]">
+        <section id="products" className="py-12 sm:py-16 bg-[#FFF2DF]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
@@ -427,15 +427,15 @@ export default function HomePage() {
                   <Link
                     key={product._id}
                     href={`/product/${product._id}`}
-                    className="group bg-[#fffdf9] rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+                    className="group bg-[#ffe9c7c2] rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
                   >
                     {/* NEW — shows full product image without cropping */}
-                    <div className="h-52 sm:h-56 md:h-60 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center overflow-hidden p-3">
+                    <div className="h-52 sm:h-56 md:h-60 bg-[#ffffffa2] flex items-center justify-center overflow-hidden p-3">
                       {product.imageFront ? (
                         <img
                           src={product.imageFront}
                           alt={product.name}
-                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 "
                           onError={(e) => {
                             (e.target as HTMLImageElement).src =
                               "https://via.placeholder.com/300x200?text=No+Image";
@@ -451,7 +451,7 @@ export default function HomePage() {
                         </div>
                       )}
                     </div>
-                    <div className="p-3 sm:p-4">
+                    <div className="p-3 sm:p-4 ">
                       {product.category && (
                         <span className="text-xs text-green-600 font-semibold bg-green-50 px-2 py-0.5 sm:py-1 rounded-full">
                           {product.category}
@@ -546,7 +546,7 @@ export default function HomePage() {
         <ReviewCarousel />
 
         {/* Social Handles Section - Responsive */}
-        <section className="py-12 sm:py-16 bg-[#fffdf9]">
+        <section className="py-12 sm:py-16 bg-[#fff2df87]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
               Connect With Us
