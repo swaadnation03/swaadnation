@@ -299,7 +299,7 @@ const { emailLayout, emailButton, CLIENT_URL } = require("./emailLayout");
 const { fromEmail: FROM_EMAIL } = require("../config/appConfig"); // ⬅️ now from appConfig
 
 // Load and compile templates
-const loadTemplate = (templateName) => {
+const loadTemplate = (templateName) => { 
   const templatePath = path.join(__dirname, "../templates", `${templateName}.html`);
   const source = fs.readFileSync(templatePath, "utf8");
   return Handlebars.compile(source);
