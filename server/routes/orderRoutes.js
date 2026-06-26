@@ -236,7 +236,8 @@ router.post("/", protect, orderLimiter, async (req, res) => {
     }
 
     const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const deliveryFee = subtotal > 499 ? 0 : 40;
+    const deliveryFee = 0;
+    // const deliveryFee = subtotal > 499 ? 0 : 40;
 
     let discount = 0;
     let validatedCoupon = null;

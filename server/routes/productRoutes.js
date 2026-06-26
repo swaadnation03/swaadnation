@@ -407,7 +407,7 @@ router.get("/frequently-bought/:productId", async (req, res) => {
       status: { $in: ["Delivered", "Processing", "Shipped"] },
     });
 
-    const productFrequency = {}; // ✅ plain JS
+    const productFrequency = {}; 
     orders.forEach((order) => {
       order.items.forEach((item) => {
         if (item.productId && item.productId.toString() !== productId) {

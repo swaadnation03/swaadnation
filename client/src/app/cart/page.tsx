@@ -15,7 +15,8 @@ export default function CartPage() {
   const [isRemoving, setIsRemoving] = useState<string | null>(null);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
-  const deliveryFee = subtotal > 499 ? 0 : 40;
+  const deliveryFee = 0;
+  // const deliveryFee = subtotal > 499 ? 0 : 40;
   const total = subtotal + deliveryFee;
 
   const handleRemove = async (id: string) => {

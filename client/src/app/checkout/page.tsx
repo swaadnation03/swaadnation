@@ -45,7 +45,8 @@ export default function CheckoutPage() {
   }, [user]);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
-  const deliveryFee = subtotal > 499 ? 0 : 40;
+  const deliveryFee = 0;
+  // const deliveryFee = subtotal > 499 ? 0 : 40;
 
   // Calculate discount
   const discount = appliedCoupon ? appliedCoupon.discount : 0;
